@@ -92,7 +92,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
         <div className="max-w-[1280px] mx-auto px-4 md:px-10 text-center">
           <div className="inline-flex items-center gap-2 bg-[#4d8efe]/10 text-[#005bbf] border border-[#4d8efe]/20 px-4 py-1.5 rounded-full mb-8">
             <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
-            <span className="text-xs font-semibold">v2.0 Now Live with Gemini 1.5 Pro</span>
+            <span className="text-xs font-semibold">v2.0 Now Live • Next-Gen AI Engine</span>
           </div>
           <h1 className="text-4xl md:text-[64px] font-bold max-w-4xl mx-auto leading-tight mb-6 tracking-tight">
             Turn Meeting Notes Into <span className="ai-gradient-text">Actionable Results</span> with AI
@@ -125,8 +125,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
           </p>
           <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded bg-[#1A73E8]"></div>
-              <span className="font-bold text-lg">Google AI</span>
+              <div className="w-8 h-8 rounded bg-[#1A73E8] flex items-center justify-center text-white font-bold text-sm">MW</div>
+              <span className="font-bold text-lg">MeetWise</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded bg-[#00D8FF]"></div>
@@ -137,8 +137,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
               <span className="font-bold text-lg">Tailwind</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded bg-[#8E75FF]"></div>
-              <span className="font-bold text-lg">Gemini</span>
+              <div className="w-8 h-8 rounded bg-[#3178C6] flex items-center justify-center text-white font-bold text-sm">TS</div>
+              <span className="font-bold text-lg">TypeScript</span>
             </div>
           </div>
         </div>

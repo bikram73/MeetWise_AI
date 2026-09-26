@@ -30,7 +30,7 @@ export const ProcessingAnimationModal: React.FC<ProcessingAnimationModalProps> =
 
         <div>
           <h3 className="text-xl font-bold text-[#131b2e] dark:text-white">Analyzing Meeting Data</h3>
-          <p className="text-xs text-[#727785] dark:text-slate-400 mt-1">Powered by Gemini 2.5 Flash Intelligence</p>
+          <p className="text-xs text-[#727785] dark:text-slate-400 mt-1">Powered by Advanced AI Intelligence</p>
         </div>
 
         {/* Progress Bar */}

@@ -105,7 +105,7 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding })
       setActiveTab('summary');
     } catch (err: any) {
       console.error('Analysis error:', err);
-      setErrorMessage(err?.message || 'An error occurred while contacting the Gemini API.');
+      setErrorMessage(err?.message || 'An error occurred while contacting the AI service.');
     } finally {
       setIsProcessing(false);
       setProgressStep(0);
@@ -170,7 +170,7 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding })
             </span>
           </button>
           <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#005bbf]/10 text-[#005bbf] hidden sm:inline-block">
-            Gemini 2.5 Workspace
+            AI Workspace
           </span>
         </div>
 
@@ -314,7 +314,7 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding })
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
                 auto_awesome
               </span>
-              Analyze Transcript with Gemini
+              Analyze Transcript with AI
             </button>
           </div>
         </section>
