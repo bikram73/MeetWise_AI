@@ -69,8 +69,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
       {/* Top Navigation Bar */}
       <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-[#c1c6d6]/20 shadow-sm h-16 flex items-center">
         <div className="flex justify-between items-center px-4 md:px-10 w-full max-w-[1280px] mx-auto">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={onOpenWorkspace}>
-            <span className="text-xl font-bold text-[#131b2e]">MeetWise AI</span>
+          <div className="flex items-center gap-2.5 cursor-pointer" onClick={onOpenWorkspace}>
+            <div className="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25">
+              <svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                <path d="m9 10 2 2 4-4" />
+              </svg>
+            </div>
+            <span className="text-xl font-bold text-[#1a73e8]">MeetWise AI</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <a className="text-[#414754] hover:text-[#005bbf] transition-colors" href="#features">Features</a>
@@ -524,7 +530,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
       <footer className="bg-[#faf8ff] py-16 border-t border-[#c1c6d6]/30">
         <div className="max-w-[1280px] mx-auto px-4 md:px-10 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="col-span-1 md:col-span-1">
-            <span className="text-xl font-bold text-[#131b2e] block mb-6">MeetWise AI</span>
+            <div className="flex items-center gap-2.5 mb-6">
+              <div className="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25">
+                <svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  <path d="m9 10 2 2 4-4" />
+                </svg>
+              </div>
+              <span className="text-xl font-bold text-[#1a73e8]">MeetWise AI</span>
+            </div>
             <p className="text-[#414754] text-sm mb-6 leading-relaxed">
               The intelligent copilot for high-stakes professional environments.
             </p>
@@ -569,7 +583,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
           </div>
         </div>
         <div className="max-w-[1280px] mx-auto px-4 md:px-10 mt-16 pt-8 border-t border-[#c1c6d6]/10 text-center text-[#727785] text-sm">
-          © 2024 MeetWise AI. All rights reserved.
+          © 2026 MeetWise AI. All rights reserved.
         </div>
       </footer>
     </div>

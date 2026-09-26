@@ -163,9 +163,15 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding })
         <div className="flex items-center gap-6">
           <button
             onClick={onBackToLanding}
-            className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity"
+            className="flex items-center gap-2.5 cursor-pointer hover:opacity-80 transition-opacity"
           >
-            <span className="text-xl font-bold bg-gradient-to-r from-[#005bbf] to-[#732de4] bg-clip-text text-transparent">
+            <div className="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25">
+              <svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                <path d="m9 10 2 2 4-4" />
+              </svg>
+            </div>
+            <span className="text-xl font-bold text-[#1a73e8]">
               MeetWise AI
             </span>
           </button>
