@@ -1,0 +1,6 @@
+{
+  "name": "MeetWise AI",
+  "description": "Turn meeting notes into actionable results with AI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
