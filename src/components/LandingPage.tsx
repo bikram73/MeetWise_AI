@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 
 interface LandingPageProps {
   onOpenWorkspace: () => void;
+  onOpenHistory?: () => void;
 }
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => {
+export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpenHistory }) => {
   const [demoProcessing, setDemoProcessing] = useState(false);
   const [demoProcessed, setDemoProcessed] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -81,7 +82,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
               <span className="text-[10px] md:text-[11px] font-semibold text-[#005bbf] tracking-wide leading-none">AI Workspace</span>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-7">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium cursor-pointer"
@@ -92,11 +93,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
             <a className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium" href="#workflow">Workflow</a>
             <a className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium" href="#demo">Demo</a>
             <a className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium" href="#faq">Docs</a>
+            {onOpenHistory && (
+              <button
+                onClick={onOpenHistory}
+                className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium flex items-center gap-1 cursor-pointer"
+              >
+                <span className="material-symbols-outlined text-[16px] text-[#1a73e8]">history</span>
+                <span>History</span>
+              </button>
+            )}
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            {onOpenHistory && (
+              <button
+                onClick={onOpenHistory}
+                className="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer"
+                title="View Transcript History"
+              >
+                <span className="material-symbols-outlined text-[18px]">history</span>
+              </button>
+            )}
             <button
               onClick={onOpenWorkspace}
-              className="bg-[#1a73e8] hover:bg-[#005bbf] text-white px-5 py-2 rounded-xl font-semibold text-sm scale-95 active:scale-90 transition-all shadow-md shadow-[#1a73e8]/20 flex items-center gap-1.5 cursor-pointer"
+              className="bg-[#1a73e8] hover:bg-[#005bbf] text-white px-4 md:px-5 py-2 rounded-xl font-semibold text-xs md:text-sm scale-95 active:scale-90 transition-all shadow-md shadow-[#1a73e8]/20 flex items-center gap-1.5 cursor-pointer"
             >
               <span>Open Workspace</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>

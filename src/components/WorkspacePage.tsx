@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MeetingAnalysisResult, ActionItem } from '../types';
 import { SAMPLE_TRANSCRIPTS } from '../data/sampleTranscripts';
 import { readTranscriptFromFile } from '../utils/fileParsers';
+import { saveHistoryItem, HistoryItem } from '../utils/historyStorage';
 import { SummaryTab } from './SummaryTab';
 import { DecisionsCard } from './DecisionsCard';
 import { ActionItemsTable } from './ActionItemsTable';
@@ -11,11 +12,18 @@ import { ProcessingAnimationModal } from './ProcessingAnimationModal';
 import { ExportModal } from './ExportModal';
 
 interface WorkspacePageProps {
+  initialHistoryItem?: HistoryItem | null;
   onBackToLanding: () => void;
+  onOpenHistory?: () => void;
   onNavigateSection?: (sectionId?: string) => void;
 }
 
-export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, onNavigateSection }) => {
+export const WorkspacePage: React.FC<WorkspacePageProps> = ({
+  initialHistoryItem,
+  onBackToLanding,
+  onOpenHistory,
+  onNavigateSection,
+}) => {
   const [activeTab, setActiveTab] = useState<'summary' | 'decisions' | 'actions' | 'discussion' | 'json' | 'markdown'>('summary');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -25,12 +33,21 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
   const [analysisNotice, setAnalysisNotice] = useState<string | null>(null);
 
   // Default transcript initially empty as requested
-  const [transcriptText, setTranscriptText] = useState('');
-  const [customPrompt, setCustomPrompt] = useState('');
+  const [transcriptText, setTranscriptText] = useState(initialHistoryItem?.transcript || '');
+  const [customPrompt, setCustomPrompt] = useState(initialHistoryItem?.customPrompt || '');
   const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
 
-  // Analysis result state initialized to null until a transcript is analyzed
-  const [analysisData, setAnalysisData] = useState<MeetingAnalysisResult | null>(null);
+  // Analysis result state initialized to loaded history item or null
+  const [analysisData, setAnalysisData] = useState<MeetingAnalysisResult | null>(initialHistoryItem?.result || null);
+
+  useEffect(() => {
+    if (initialHistoryItem) {
+      setTranscriptText(initialHistoryItem.transcript || '');
+      setCustomPrompt(initialHistoryItem.customPrompt || '');
+      setAnalysisData(initialHistoryItem.result || null);
+      setActiveTab('summary');
+    }
+  }, [initialHistoryItem]);
 
   const charCount = transcriptText.length;
   const wordCount = transcriptText.trim() ? transcriptText.trim().split(/\s+/).length : 0;
@@ -85,6 +102,23 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
       }
       setErrorMessage(null);
       setActiveTab('summary');
+
+      // Automatically store in browser localStorage history
+      try {
+        saveHistoryItem({
+          title: result.data.meeting_title || 'Meeting Summary',
+          transcript: transcriptText,
+          customPrompt: customPrompt.trim() || undefined,
+          wordCount: transcriptText.trim().split(/\s+/).length,
+          charCount: transcriptText.length,
+          result: result.data,
+          actionItemCount: result.data.action_items?.length || 0,
+          decisionCount: result.data.decisions?.length || 0,
+          coverageScore: result.data.confidence_metrics?.overallScore,
+        });
+      } catch (saveErr) {
+        console.warn('Failed to auto-save to history:', saveErr);
+      }
     } catch (err: any) {
       console.error('Analysis error:', err);
       let msg = err?.message || 'An error occurred while contacting the AI service.';
@@ -208,9 +242,34 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
             >
               Docs
             </button>
+            {onOpenHistory && (
+              <button
+                onClick={onOpenHistory}
+                className={`${isDarkMode ? 'text-slate-300 hover:text-white' : 'text-slate-600 hover:text-[#1a73e8]'} transition-colors font-medium cursor-pointer flex items-center gap-1`}
+              >
+                <span className="material-symbols-outlined text-[16px] text-[#1a73e8]">history</span>
+                <span>History</span>
+              </button>
+            )}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            {/* History button for mobile and desktop quick access */}
+            {onOpenHistory && (
+              <button
+                onClick={onOpenHistory}
+                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border ${
+                  isDarkMode
+                    ? 'border-slate-700 text-slate-300 hover:bg-slate-800'
+                    : 'border-slate-200 text-slate-700 hover:bg-slate-50'
+                } transition-colors cursor-pointer shadow-xs`}
+                title="View previous transcripts and analyses"
+              >
+                <span className="material-symbols-outlined text-[16px] text-[#1a73e8]">history</span>
+                <span className="hidden sm:inline">History</span>
+              </button>
+            )}
+
             {/* New Meeting action */}
             <button
               onClick={handleClearTranscript}
@@ -222,7 +281,7 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
               title="Start a new meeting transcript"
             >
               <span className="material-symbols-outlined text-[16px] text-[#1a73e8]">add_circle</span>
-              <span>New Meeting</span>
+              <span className="hidden sm:inline">New Meeting</span>
             </button>
 
             {/* Export button */}
