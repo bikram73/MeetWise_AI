@@ -24,44 +24,13 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [analysisNotice, setAnalysisNotice] = useState<string | null>(null);
 
-  // Default transcript loaded from PRD sample
-  const [transcriptText, setTranscriptText] = useState(SAMPLE_TRANSCRIPTS[0].content);
+  // Default transcript initially empty as requested
+  const [transcriptText, setTranscriptText] = useState('');
   const [customPrompt, setCustomPrompt] = useState('');
-  const [selectedPresetId, setSelectedPresetId] = useState(SAMPLE_TRANSCRIPTS[0].id);
+  const [selectedPresetId, setSelectedPresetId] = useState<string | null>(null);
 
-  // Analysis result state initialized with default structured sample
-  const [analysisData, setAnalysisData] = useState<MeetingAnalysisResult>({
-    meeting_title: 'Project Sync Meeting',
-    meeting_objective: 'Complete dashboard redesign and align project development priorities.',
-    summary: 'The team reviewed project deliverables, assigned responsibilities for dashboard redesign, API integration, and testing, postponed mobile development to Phase 2, and agreed to prioritize application performance improvements.',
-    discussion_points: [
-      'Dashboard redesign deadline targeting completion before July 30.',
-      'API integration progress and timeline assigned to Bob for next Tuesday.',
-      'Testing report preparation by Charlie by Friday.',
-      'Mobile development feature postponement to Phase 2.',
-      'Application performance optimization identified by David.'
-    ],
-    decisions: [
-      { title: 'Dashboard redesign must finish before July 30.', status: 'Approved', impact: 'Key Release Goal' },
-      { title: 'Mobile development is postponed to Phase 2.', status: 'Delayed', impact: 'Capacity Management' },
-      { title: 'Performance optimization prioritized after current deliverables.', status: 'Approved', impact: 'Quality & Speed' }
-    ],
-    risks: [
-      'Performance improvements may delay future features if not scoped properly.',
-      'Mobile postponement may affect mobile user adoption in Q3.'
-    ],
-    open_questions: [
-      'What specific performance metrics should be targeted for optimization?',
-      'When exactly will Phase 2 begin?'
-    ],
-    action_items: [
-      { task: 'Complete dashboard redesign', owner: 'Alice', due_date: 'July 30', priority: 'High', status: 'Pending' },
-      { task: 'Finish API integration', owner: 'Bob', due_date: 'Next Tuesday', priority: 'High', status: 'Pending' },
-      { task: 'Prepare testing report', owner: 'Charlie', due_date: 'Friday', priority: 'Medium', status: 'Pending' },
-      { task: 'Review testing report after testing', owner: 'Bob', due_date: 'After testing', priority: 'Medium', status: 'Pending' },
-      { task: 'Improve application performance', owner: 'David', due_date: 'Not Specified', priority: 'Medium', status: 'Pending' }
-    ]
-  });
+  // Analysis result state initialized to null until a transcript is analyzed
+  const [analysisData, setAnalysisData] = useState<MeetingAnalysisResult | null>(null);
 
   const charCount = transcriptText.length;
   const wordCount = transcriptText.trim() ? transcriptText.trim().split(/\s+/).length : 0;
@@ -149,6 +118,7 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
   // Action Items modifications
   const handleUpdateActionItem = (index: number, updatedItem: ActionItem) => {
     setAnalysisData((prev) => {
+      if (!prev) return prev;
       const updated = [...prev.action_items];
       updated[index] = updatedItem;
       return { ...prev, action_items: updated };
@@ -156,16 +126,22 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
   };
 
   const handleAddActionItem = (newItem: ActionItem) => {
-    setAnalysisData((prev) => ({
-      ...prev,
-      action_items: [newItem, ...prev.action_items],
-    }));
+    setAnalysisData((prev) => {
+      if (!prev) return prev;
+      return {
+        ...prev,
+        action_items: [newItem, ...prev.action_items],
+      };
+    });
   };
 
   const handleClearTranscript = () => {
     setTranscriptText('');
     setCustomPrompt('');
+    setSelectedPresetId(null);
+    setAnalysisData(null);
     setErrorMessage(null);
+    setAnalysisNotice(null);
   };
 
   return (
@@ -312,16 +288,89 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
               value={transcriptText}
               onChange={(e) => {
                 setTranscriptText(e.target.value);
+                if (selectedPresetId) setSelectedPresetId(null);
                 if (errorMessage) setErrorMessage(null);
               }}
-              className={`w-full flex-1 p-4 rounded-xl border ${
+              className={`w-full p-4 rounded-xl border ${
                 isDarkMode ? 'bg-slate-950 border-slate-800 text-slate-200' : 'bg-slate-50/50 border-[#c1c6d6]/30 text-[#131b2e]'
-              } font-mono text-xs leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-[#005bbf]/50 custom-scrollbar min-h-[300px]`}
-              placeholder="Paste your meeting transcript here..."
+              } font-mono text-xs leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-[#005bbf]/50 custom-scrollbar min-h-[190px]`}
+              placeholder="Paste your meeting transcript here, or pick one of the 5 samples below..."
             />
 
+            {/* Counters and Clear */}
+            <div className="flex justify-between items-center text-xs text-[#727785] pt-0.5">
+              <span>{charCount.toLocaleString()} characters · {wordCount.toLocaleString()} words</span>
+              {transcriptText && (
+                <button
+                  type="button"
+                  onClick={handleClearTranscript}
+                  className="text-xs text-red-500 hover:text-red-700 font-semibold cursor-pointer flex items-center gap-1 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[14px]">backspace</span>
+                  Clear Text
+                </button>
+              )}
+            </div>
+
+            {/* 5 Sample Transcripts down below the textarea */}
+            <div className="pt-2 border-t border-[#c1c6d6]/20 dark:border-slate-800 space-y-2">
+              <div className="flex justify-between items-center">
+                <label className="text-[11px] font-bold text-[#727785] dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[15px] text-[#005bbf]">dataset</span>
+                  Sample Transcripts (5 Available)
+                </label>
+                {selectedPresetId && (
+                  <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    Sample Loaded
+                  </span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {SAMPLE_TRANSCRIPTS.map((sample, idx) => {
+                  const isSelected = selectedPresetId === sample.id;
+                  return (
+                    <button
+                      key={sample.id}
+                      type="button"
+                      onClick={() => handleSelectPreset(sample.id)}
+                      className={`text-left p-2.5 rounded-xl border transition-all cursor-pointer flex items-start gap-2.5 ${
+                        idx === 4 ? 'sm:col-span-2' : ''
+                      } ${
+                        isSelected
+                          ? 'border-[#005bbf] bg-[#005bbf]/10 shadow-xs ring-1 ring-[#005bbf]/40'
+                          : isDarkMode
+                          ? 'border-slate-800 bg-slate-950/60 hover:border-slate-700'
+                          : 'border-[#c1c6d6]/30 bg-slate-50/70 hover:bg-slate-100/70 hover:border-[#005bbf]/40'
+                      }`}
+                    >
+                      <span className={`w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 ${
+                        isSelected ? 'bg-[#005bbf] text-white' : 'bg-slate-200 dark:bg-slate-800 text-[#414754] dark:text-slate-300'
+                      }`}>
+                        {idx + 1}
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center justify-between gap-1">
+                          <span className={`text-xs font-bold truncate ${isSelected ? 'text-[#005bbf]' : 'text-[#131b2e] dark:text-slate-200'}`}>
+                            {sample.title}
+                          </span>
+                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-200/60 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-medium shrink-0">
+                            {sample.category}
+                          </span>
+                        </div>
+                        <p className="text-[10px] text-[#727785] dark:text-slate-400 line-clamp-1 mt-0.5">
+                          {sample.description}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             {/* Custom Focus Instruction Input */}
-            <div>
+            <div className="pt-1">
               <label className="text-[11px] font-bold text-[#727785] dark:text-slate-400 uppercase tracking-wider block mb-1">
                 Optional AI Focus Directive
               </label>
@@ -334,12 +383,6 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
                   isDarkMode ? 'bg-slate-950 border-slate-800 text-slate-200' : 'bg-white border-[#c1c6d6]/30'
                 } focus:outline-none focus:ring-2 focus:ring-[#005bbf]/50`}
               />
-            </div>
-
-            {/* Counters */}
-            <div className="flex justify-between items-center text-xs text-[#727785] pt-1">
-              <span>{charCount.toLocaleString()} characters</span>
-              <span>{wordCount.toLocaleString()} words</span>
             </div>
           </div>
 
@@ -419,52 +462,85 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
 
           {/* Tab Content Body */}
           <div className="p-6 flex-1 overflow-y-auto custom-scrollbar space-y-6">
-            {activeTab === 'summary' && (
-              <SummaryTab data={analysisData} isDarkMode={isDarkMode} />
-            )}
-
-            {activeTab === 'decisions' && (
-              <DecisionsCard decisions={analysisData.decisions} isDarkMode={isDarkMode} />
-            )}
-
-            {activeTab === 'actions' && (
-              <ActionItemsTable
-                actionItems={analysisData.action_items}
-                onUpdateActionItem={handleUpdateActionItem}
-                onAddActionItem={handleAddActionItem}
-                isDarkMode={isDarkMode}
-              />
-            )}
-
-            {activeTab === 'discussion' && (
-              <div className="space-y-4 animate-fadeIn">
-                <h3 className="text-xs font-bold uppercase text-[#727785] tracking-wider mb-2">
-                  Key Discussion Topics
-                </h3>
-                {analysisData.discussion_points?.map((point, idx) => (
-                  <div
-                    key={idx}
-                    className={`p-4 rounded-xl border ${
-                      isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-[#c1c6d6]/30'
-                    } space-y-1`}
-                  >
-                    <div className="flex justify-between items-center text-xs text-[#727785]">
-                      <span className="font-bold text-[#005bbf]">Topic #{idx + 1}</span>
-                    </div>
-                    <p className={`text-xs ${isDarkMode ? 'text-slate-300' : 'text-[#414754]'} leading-relaxed`}>
-                      {point}
-                    </p>
-                  </div>
-                ))}
+            {!analysisData ? (
+              <div className="h-full min-h-[360px] flex flex-col items-center justify-center text-center p-6 space-y-4 animate-fadeIn">
+                <div className="w-16 h-16 rounded-2xl bg-[#005bbf]/10 text-[#005bbf] flex items-center justify-center shadow-xs">
+                  <span className="material-symbols-outlined text-3xl">auto_awesome</span>
+                </div>
+                <div className="max-w-md space-y-1.5">
+                  <h3 className="font-bold text-base text-[#131b2e] dark:text-white">
+                    No Meeting Analyzed Yet
+                  </h3>
+                  <p className="text-xs text-[#727785] dark:text-slate-400 leading-relaxed">
+                    Enter or paste a transcript in the editor on the left, or choose from one of the <strong>5 sample meetings</strong>, then click <strong>"Analyze Transcript with AI"</strong>.
+                  </p>
+                </div>
+                <div className="pt-2 flex flex-wrap justify-center gap-2 max-w-md">
+                  {SAMPLE_TRANSCRIPTS.map((sample, idx) => (
+                    <button
+                      key={sample.id}
+                      type="button"
+                      onClick={() => handleSelectPreset(sample.id)}
+                      className="px-3 py-1.5 rounded-xl text-xs font-semibold border border-[#c1c6d6]/40 hover:border-[#005bbf] hover:text-[#005bbf] transition-all bg-white dark:bg-slate-800 shadow-xs cursor-pointer flex items-center gap-1.5"
+                    >
+                      <span className="w-4 h-4 rounded-full bg-[#005bbf]/10 text-[#005bbf] text-[10px] flex items-center justify-center font-bold">
+                        {idx + 1}
+                      </span>
+                      <span>{sample.title}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            )}
+            ) : (
+              <>
+                {activeTab === 'summary' && (
+                  <SummaryTab data={analysisData} isDarkMode={isDarkMode} />
+                )}
 
-            {activeTab === 'json' && (
-              <JsonViewer data={analysisData} isDarkMode={isDarkMode} />
-            )}
+                {activeTab === 'decisions' && (
+                  <DecisionsCard decisions={analysisData.decisions} isDarkMode={isDarkMode} />
+                )}
 
-            {activeTab === 'markdown' && (
-              <MarkdownViewer data={analysisData} isDarkMode={isDarkMode} />
+                {activeTab === 'actions' && (
+                  <ActionItemsTable
+                    actionItems={analysisData.action_items}
+                    onUpdateActionItem={handleUpdateActionItem}
+                    onAddActionItem={handleAddActionItem}
+                    isDarkMode={isDarkMode}
+                  />
+                )}
+
+                {activeTab === 'discussion' && (
+                  <div className="space-y-4 animate-fadeIn">
+                    <h3 className="text-xs font-bold uppercase text-[#727785] tracking-wider mb-2">
+                      Key Discussion Topics
+                    </h3>
+                    {analysisData.discussion_points?.map((point, idx) => (
+                      <div
+                        key={idx}
+                        className={`p-4 rounded-xl border ${
+                          isDarkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-[#c1c6d6]/30'
+                        } space-y-1`}
+                      >
+                        <div className="flex justify-between items-center text-xs text-[#727785]">
+                          <span className="font-bold text-[#005bbf]">Topic #{idx + 1}</span>
+                        </div>
+                        <p className={`text-xs ${isDarkMode ? 'text-slate-300' : 'text-[#414754]'} leading-relaxed`}>
+                          {point}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {activeTab === 'json' && (
+                  <JsonViewer data={analysisData} isDarkMode={isDarkMode} />
+                )}
+
+                {activeTab === 'markdown' && (
+                  <MarkdownViewer data={analysisData} isDarkMode={isDarkMode} />
+                )}
+              </>
             )}
           </div>
 
@@ -473,11 +549,22 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
             isDarkMode ? 'border-slate-800 bg-slate-900/50' : 'border-[#c1c6d6]/20 bg-[#faf8ff]'
           } flex justify-between items-center`}>
             <span className="text-xs text-[#727785]">
-              Structured Output ready for Export
+              {analysisData ? 'Structured Output ready for Export' : 'Select a sample or paste transcript to begin'}
             </span>
             <button
-              onClick={() => setShowExportModal(true)}
-              className="bg-[#005bbf] hover:bg-[#1a73e8] text-white px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all cursor-pointer shadow-sm"
+              onClick={() => {
+                if (!analysisData) {
+                  setErrorMessage('Please analyze a transcript before exporting.');
+                  return;
+                }
+                setShowExportModal(true);
+              }}
+              disabled={!analysisData}
+              className={`px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all shadow-sm ${
+                analysisData
+                  ? 'bg-[#005bbf] hover:bg-[#1a73e8] text-white cursor-pointer'
+                  : 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
+              }`}
             >
               <span className="material-symbols-outlined text-[18px]">download</span>
               Export Results

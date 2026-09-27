@@ -1,6 +1,7 @@
 export interface SampleTranscript {
   id: string;
   title: string;
+  category: string;
   description: string;
   content: string;
 }
@@ -8,7 +9,8 @@ export interface SampleTranscript {
 export const SAMPLE_TRANSCRIPTS: SampleTranscript[] = [
   {
     id: 'project-sync',
-    title: 'Project Sync Meeting (PRD Sample)',
+    title: 'Project Sync (PRD Sample)',
+    category: 'Engineering',
     description: 'Alice, Bob, Charlie, and David discussing dashboard redesign, API integration, testing, and performance.',
     content: `Project Sync Meeting
 
@@ -35,6 +37,7 @@ Meeting ended.`
   {
     id: 'q3-roadmap',
     title: 'Q3 Strategy & Roadmap Planning',
+    category: 'Strategy',
     description: 'Sarah, Marcus, and Lena evaluating Legacy Auth Modernization vs. AI Workspace priorities.',
     content: `[00:00:15] Sarah: Thanks everyone for joining the Q3 Strategy sync. Today we need to decide on our platform roadmap priorities for Q4 and allocate engineering resources accordingly.
 [00:00:32] Marcus: Before we dive in, I want to confirm that the security audit report came back clean. All critical vulnerabilities from last month have been resolved by the DevOps team.
@@ -51,8 +54,9 @@ Meeting ended.`
   },
   {
     id: 'sprint-retro',
-    title: 'Engineering Sprint Retrospective',
-    description: 'Team discussing sprint metrics, bug triage, CI/CD pipeline bottlenecks, and task assignments.',
+    title: 'Sprint Retrospective',
+    category: 'Agile & DevOps',
+    description: 'Engineering lead, QA, and Product reviewing sprint metrics, CI/CD pipeline bottlenecks, and action items.',
     content: `Sprint Retrospective - Frontend & Platform Team
 
 John (Engineering Lead):
@@ -72,5 +76,67 @@ Customer support reported intermittent 504 errors on the search endpoint. John, 
 
 John:
 I will personally investigate the search endpoint 504 timeouts by tomorrow afternoon. We'll also hold a technical post-mortem next Monday.`
+  },
+  {
+    id: 'product-launch',
+    title: 'Product Launch & GTM Sync',
+    category: 'Marketing & Sales',
+    description: 'Cross-functional launch alignment covering press releases, influencer embargoes, pricing tiers, and collateral.',
+    content: `Product Launch & Go-To-Market Alignment Meeting
+
+Elena (VP Marketing):
+Welcome team. We have 14 days before the MeetWise AI 2.0 public launch. Today we must lock in the PR schedule, partner enablement, and webinar dates.
+
+Raj (Product Marketing):
+The press release draft is ready. I will distribute the press release to our media embargo list by Monday morning at 9 AM PST.
+
+Chloe (Design Director):
+All landing page illustrations and video demo assets are finalized. Chloe will deliver the final social media graphics pack to Raj by Wednesday.
+
+Tom (Sales Enablement):
+The enterprise sales team needs customer battlecards and updated pricing sheets. Can we get those before next week's sales all-hands?
+
+Raj:
+Yes, I'll update the battlecards with the new AI compliance tier and upload them to Highspot by Friday EOD.
+
+Elena:
+Decision: We will host the launch keynote live webinar on Thursday, November 7th. Elena will send speaker invites to our guest panel by tomorrow.
+
+Chloe:
+One blocker: The animated hero video on the homepage needs CDN caching setup so page load remains under 1.2 seconds.
+
+Tom:
+I'll file an urgent ticket with the web infra team today to configure Cloudflare caching for all video assets.`
+  },
+  {
+    id: 'incident-postmortem',
+    title: 'Production Incident Post-Mortem',
+    category: 'SRE & Security',
+    description: 'Root cause analysis of the database connection pool exhaustion and remediation commitments.',
+    content: `Post-Mortem: Incident INC-8492 - API Gateway & DB Connection Pool Saturation
+
+Liam (SRE Incident Commander):
+Let's review the root cause and remediation items from yesterday's 42-minute API gateway latency degradation.
+
+Maya (Principal Backend Architect):
+At 14:15 UTC, an unindexed query in the notification dispatcher triggered table locks on the PostgreSQL cluster. Connection pools filled within 3 minutes, causing 503 errors across dependent microservices.
+
+Liam:
+What was the resolution and immediate mitigation?
+
+Carlos (Database Administrator):
+We manually terminated long-running locking queries and temporarily boosted pool capacity to 300 connections. Service restored at 14:57 UTC.
+
+Maya:
+Action item: Maya will add the missing composite index on the notifications table and deploy the patch to staging by Tuesday.
+
+Carlos:
+Action item: Carlos will implement strict 5-second query statement timeouts across all read replicas by Thursday to prevent pool cascading failures.
+
+Liam:
+Action item: Liam will configure PagerDuty alerts for connection pool utilization above 75% by Friday.
+
+Maya:
+Decision made: We will mandate database query reviews for all schema alterations in PR templates going forward.`
   }
 ];
