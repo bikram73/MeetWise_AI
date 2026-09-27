@@ -513,37 +513,48 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#faf8ff] py-16 border-t border-[#c1c6d6]/30">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-10 flex flex-col md:flex-row justify-between gap-8">
-          <div className="max-w-md">
-            <div className="flex items-center gap-2.5 mb-6">
-              <div className="w-9 h-9 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25 shrink-0">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                  <path d="m9 10 2 2 4-4" />
-                </svg>
-              </div>
-              <div className="flex flex-col text-left">
-                <span className="text-xl font-bold text-[#1a73e8] leading-tight">MeetWise AI</span>
-                <span className="text-[11px] font-semibold text-[#005bbf] tracking-wide leading-none">AI Workspace</span>
-              </div>
+      <footer className="bg-[#faf8ff] py-8 border-t border-[#c1c6d6]/30">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#1a73e8] flex items-center justify-center text-white shadow-xs shrink-0">
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                <path d="m9 10 2 2 4-4" />
+              </svg>
             </div>
-            <p className="text-[#414754] text-sm leading-relaxed">
-              The intelligent copilot for high-stakes professional environments.
-            </p>
+            <div>
+              <span className="text-sm font-bold text-[#1a73e8]">MeetWise AI</span>
+              <span className="text-xs text-slate-500 ml-2 hidden md:inline">Autonomous Meeting Intelligence</span>
+            </div>
           </div>
-          <div>
-            <h4 className="font-bold text-[#131b2e] mb-6">Product</h4>
-            <ul className="space-y-4 text-[#414754] text-sm">
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Features</li>
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">API</li>
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Integrations</li>
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Enterprise</li>
-            </ul>
+
+          <div className="flex flex-wrap items-center gap-6 text-xs text-slate-600">
+            <a href="#features" className="hover:text-[#005bbf] transition-colors font-medium">Features</a>
+            <a href="#workflow" className="hover:text-[#005bbf] transition-colors font-medium">Workflow</a>
+            <a href="#demo" className="hover:text-[#005bbf] transition-colors font-medium">Demo</a>
+            <a href="#faq" className="hover:text-[#005bbf] transition-colors font-medium">FAQ</a>
+            <button
+              onClick={onOpenWorkspace}
+              className="text-[#005bbf] hover:underline font-semibold cursor-pointer"
+            >
+              Workspace
+            </button>
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-800 font-semibold transition-all shadow-2xs"
+            >
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+              </svg>
+              <span>GitHub</span>
+            </a>
           </div>
-        </div>
-        <div className="max-w-[1280px] mx-auto px-4 md:px-10 mt-16 pt-8 border-t border-[#c1c6d6]/10 text-center text-[#727785] text-sm">
-          © 2026 MeetWise AI. All rights reserved.
+
+          <div className="text-xs text-slate-500">
+            © 2026 MeetWise AI
+          </div>
         </div>
       </footer>
     </div>
