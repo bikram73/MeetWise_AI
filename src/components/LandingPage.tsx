@@ -528,8 +528,8 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
 
       {/* Footer */}
       <footer className="bg-[#faf8ff] py-16 border-t border-[#c1c6d6]/30">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-10 grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="col-span-1 md:col-span-1">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-10 flex flex-col md:flex-row justify-between gap-8">
+          <div className="max-w-md">
             <div className="flex items-center gap-2.5 mb-6">
               <div className="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25">
                 <svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -539,20 +539,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
               </div>
               <span className="text-xl font-bold text-[#1a73e8]">MeetWise AI</span>
             </div>
-            <p className="text-[#414754] text-sm mb-6 leading-relaxed">
+            <p className="text-[#414754] text-sm leading-relaxed">
               The intelligent copilot for high-stakes professional environments.
             </p>
-            <div className="flex gap-4">
-              <span className="material-symbols-outlined text-[#727785] cursor-pointer hover:text-[#005bbf] transition-colors">
-                public
-              </span>
-              <span className="material-symbols-outlined text-[#727785] cursor-pointer hover:text-[#005bbf] transition-colors">
-                chat
-              </span>
-              <span className="material-symbols-outlined text-[#727785] cursor-pointer hover:text-[#005bbf] transition-colors">
-                mail
-              </span>
-            </div>
           </div>
           <div>
             <h4 className="font-bold text-[#131b2e] mb-6">Product</h4>
@@ -561,24 +550,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
               <li className="hover:text-[#005bbf] cursor-pointer transition-colors">API</li>
               <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Integrations</li>
               <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Enterprise</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-[#131b2e] mb-6">Resources</h4>
-            <ul className="space-y-4 text-[#414754] text-sm">
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Documentation</li>
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Blog</li>
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Guides</li>
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Support</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-[#131b2e] mb-6">Legal</h4>
-            <ul className="space-y-4 text-[#414754] text-sm">
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Privacy Policy</li>
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Terms of Service</li>
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Security</li>
-              <li className="hover:text-[#005bbf] cursor-pointer transition-colors">Status</li>
             </ul>
           </div>
         </div>
