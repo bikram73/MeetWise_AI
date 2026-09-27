@@ -94,8 +94,8 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
               className={`w-full pl-9 pr-3 py-2 text-xs rounded-xl border ${
                 isDarkMode
                   ? 'bg-slate-950 border-slate-800 text-slate-200 placeholder-slate-500'
-                  : 'bg-white border-[#c1c6d6]/30 text-[#131b2e]'
-              } focus:outline-none focus:ring-2 focus:ring-[#005bbf]/50`}
+                  : 'bg-white border-slate-200 text-slate-900 placeholder-slate-400'
+              } focus:outline-none focus:ring-2 focus:ring-[#1a73e8]/30`}
             />
           </div>
 
@@ -104,7 +104,7 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
             value={selectedPriority}
             onChange={(e) => setSelectedPriority(e.target.value)}
             className={`px-3 py-2 text-xs rounded-xl border ${
-              isDarkMode ? 'bg-slate-950 border-slate-800 text-slate-200' : 'bg-white border-[#c1c6d6]/30'
+              isDarkMode ? 'bg-slate-950 border-slate-800 text-slate-200' : 'bg-white border-slate-200 text-slate-700'
             } focus:outline-none cursor-pointer`}
           >
             <option value="all">All Priorities</option>
@@ -117,7 +117,7 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
         {/* Add Task Button */}
         <button
           onClick={() => setShowAddModal(true)}
-          className="bg-[#005bbf] hover:bg-[#1a73e8] text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-sm"
+          className="bg-[#1a73e8] hover:bg-[#1557b0] text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
         >
           <span className="material-symbols-outlined text-[16px]">add</span>
           Add Task
@@ -125,10 +125,10 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
       </div>
 
       {/* Table Container */}
-      <div className={`overflow-x-auto rounded-2xl border ${isDarkMode ? 'border-slate-800 bg-slate-900' : 'border-[#c1c6d6]/30 bg-white'}`}>
+      <div className={`overflow-x-auto rounded-2xl border shadow-xs ${isDarkMode ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-white'}`}>
         <table className="w-full text-left text-xs border-collapse">
           <thead>
-            <tr className={`border-b font-bold ${isDarkMode ? 'bg-slate-950/60 border-slate-800 text-slate-400' : 'bg-[#f2f3ff]/60 border-[#c1c6d6]/30 text-[#414754]'}`}>
+            <tr className={`border-b font-semibold ${isDarkMode ? 'bg-slate-950/60 border-slate-800 text-slate-400' : 'bg-slate-50/80 border-slate-200 text-slate-700'}`}>
               <th className="p-3.5">Task Description</th>
               <th className="p-3.5">Owner</th>
               <th className="p-3.5">Due Date</th>
@@ -136,7 +136,7 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
               <th className="p-3.5">Status</th>
             </tr>
           </thead>
-          <tbody className={`divide-y ${isDarkMode ? 'divide-slate-800/60' : 'divide-[#c1c6d6]/20'}`}>
+          <tbody className={`divide-y ${isDarkMode ? 'divide-slate-800/60' : 'divide-slate-100'}`}>
             {filteredItems.length === 0 ? (
               <tr>
                 <td colSpan={5} className="p-8 text-center text-slate-400 text-xs">

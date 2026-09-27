@@ -28,16 +28,16 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ data, isDarkMode
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewMode('preview')}
-            className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
-              viewMode === 'preview' ? 'bg-[#005bbf] text-white' : 'text-slate-400 hover:text-white'
+            className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+              viewMode === 'preview' ? 'bg-[#1a73e8] text-white' : 'text-slate-400 hover:text-white'
             }`}
           >
             Formatted Preview
           </button>
           <button
             onClick={() => setViewMode('raw')}
-            className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors cursor-pointer ${
-              viewMode === 'raw' ? 'bg-[#005bbf] text-white' : 'text-slate-400 hover:text-white'
+            className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
+              viewMode === 'raw' ? 'bg-[#1a73e8] text-white' : 'text-slate-400 hover:text-white'
             }`}
           >
             Raw Markdown
@@ -47,7 +47,7 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ data, isDarkMode
         <div className="flex gap-2">
           <button
             onClick={handleCopy}
-            className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-lg flex items-center gap-1 font-bold transition-colors cursor-pointer"
+            className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs rounded-lg flex items-center gap-1 font-semibold transition-colors cursor-pointer"
           >
             <span className="material-symbols-outlined text-[14px]">
               {copied ? 'check' : 'content_copy'}
@@ -56,7 +56,7 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ data, isDarkMode
           </button>
           <button
             onClick={handleDownload}
-            className="px-3 py-1 bg-[#005bbf] hover:bg-[#1a73e8] text-white text-xs rounded-lg flex items-center gap-1 font-bold transition-colors cursor-pointer"
+            className="px-3 py-1 bg-[#1a73e8] hover:bg-[#1557b0] text-white text-xs rounded-lg flex items-center gap-1 font-semibold transition-colors cursor-pointer"
           >
             <span className="material-symbols-outlined text-[14px]">download</span>
             Download .MD
@@ -72,8 +72,8 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ data, isDarkMode
       ) : (
         <div
           className={`p-6 rounded-2xl border ${
-            isDarkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-[#c1c6d6]/30 text-[#131b2e]'
-          } space-y-4 text-xs leading-relaxed max-h-[500px] overflow-y-auto custom-scrollbar`}
+            isDarkMode ? 'bg-slate-900 border-slate-800 text-slate-200' : 'bg-white border-slate-200 text-slate-800'
+          } space-y-4 text-xs leading-relaxed max-h-[500px] overflow-y-auto custom-scrollbar shadow-xs`}
         >
           <div className="pb-4 border-b border-slate-200 dark:border-slate-800">
             <h1 className="text-xl font-bold mb-1">{data.meeting_title || 'Meeting Summary'}</h1>
@@ -82,24 +82,24 @@ export const MarkdownViewer: React.FC<MarkdownViewerProps> = ({ data, isDarkMode
 
           {data.meeting_objective && (
             <div>
-              <h2 className="text-xs font-bold uppercase text-[#005bbf] tracking-wider mb-1">🎯 Meeting Objective</h2>
+              <h2 className="text-xs font-bold uppercase text-[#1a73e8] tracking-wider mb-1">🎯 Meeting Objective</h2>
               <p className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl">{data.meeting_objective}</p>
             </div>
           )}
 
           {data.summary && (
             <div>
-              <h2 className="text-xs font-bold uppercase text-[#005bbf] tracking-wider mb-1">📌 Executive Summary</h2>
+              <h2 className="text-xs font-bold uppercase text-[#1a73e8] tracking-wider mb-1">📌 Executive Summary</h2>
               <p className="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl leading-relaxed">{data.summary}</p>
             </div>
           )}
 
           {data.action_items && data.action_items.length > 0 && (
             <div>
-              <h2 className="text-xs font-bold uppercase text-[#005bbf] tracking-wider mb-2">🚀 Action Items</h2>
-              <div className="overflow-x-auto border rounded-xl">
+              <h2 className="text-xs font-bold uppercase text-[#1a73e8] tracking-wider mb-2">🚀 Action Items</h2>
+              <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-xl">
                 <table className="w-full text-left text-xs">
-                  <thead className="bg-slate-100 dark:bg-slate-800 font-bold">
+                  <thead className="bg-slate-50 dark:bg-slate-800 font-semibold text-slate-700 dark:text-slate-300">
                     <tr>
                       <th className="p-2.5">Task</th>
                       <th className="p-2.5">Owner</th>
