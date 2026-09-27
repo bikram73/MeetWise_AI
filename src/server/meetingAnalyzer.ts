@@ -134,22 +134,27 @@ export const responseSchema = {
 /**
  * Deterministic Extraction Coverage / Confidence calculation
  * Evaluates how explicitly the meeting participants articulated tasks, owners, deadlines, and decisions.
+ * Every metric is genuinely calculated from actual data rather than hard-coded constants.
  */
 export function calculateExtractionConfidence(
   actionItems: ActionItem[],
   decisions: DecisionItem[]
 ): ConfidenceMetrics {
-  let ownerAttribution = 0;
-  let deadlinePrecision = 0;
+  let ownerAttribution = 100;
+  let deadlinePrecision = 100;
+  let semanticClarity = 100;
 
   if (actionItems.length > 0) {
     let assignedCount = 0;
     let explicitDateCount = 0;
+    let clearTaskCount = 0;
 
     actionItems.forEach((item) => {
+      // 1. Owner attribution: Explicit named entity vs Unassigned
       if (item.owner && item.owner.toLowerCase() !== "unassigned" && item.owner.trim().length > 0) {
         assignedCount++;
       }
+      // 2. Deadline precision: Calendar date or explicit day vs Not Specified
       if (
         item.due_date &&
         item.due_date.toLowerCase() !== "not specified" &&
@@ -157,18 +162,32 @@ export function calculateExtractionConfidence(
       ) {
         explicitDateCount++;
       }
+      // 3. Semantic clarity: Concrete actionable verb + object (> 12 characters and multiple words)
+      if (item.task && item.task.trim().length >= 12 && item.task.trim().includes(" ")) {
+        clearTaskCount++;
+      }
     });
 
     ownerAttribution = Math.round((assignedCount / actionItems.length) * 100);
     deadlinePrecision = Math.round((explicitDateCount / actionItems.length) * 100);
-  } else {
-    // Zero action items: coverage is complete for unassigned tasks (100% precision on zero claims)
-    ownerAttribution = 100;
-    deadlinePrecision = 100;
+    semanticClarity = Math.round((clearTaskCount / actionItems.length) * 100);
   }
 
-  const decisionAgreement = decisions.length > 0 ? 95 : 90;
-  const semanticClarity = 95;
+  // 4. Decision Structure & Agreement Completeness:
+  // Derived from the percentage of extracted decisions containing title, defined status, and impact details.
+  let decisionAgreement = 100;
+  if (decisions.length > 0) {
+    let completeDecisionsCount = 0;
+    decisions.forEach((dec) => {
+      const hasTitle = Boolean(dec.title && dec.title.trim().length > 5);
+      const hasStatus = Boolean(dec.status && ["Approved", "Delayed", "Rejected", "Pending"].includes(dec.status));
+      const hasDetails = Boolean(dec.details && dec.details.trim().length > 5);
+      if (hasTitle && hasStatus && hasDetails) {
+        completeDecisionsCount++;
+      }
+    });
+    decisionAgreement = Math.round((completeDecisionsCount / decisions.length) * 100);
+  }
 
   // Weighted extraction coverage formula: Owner 35%, Deadline 30%, Semantic 20%, Decision 15%
   const overallScore = Math.round(

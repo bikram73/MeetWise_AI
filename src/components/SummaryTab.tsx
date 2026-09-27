@@ -16,10 +16,12 @@ export const SummaryTab: React.FC<SummaryTabProps> = ({ data, isDarkMode = false
 
     let ownerAttribution = 100;
     let deadlinePrecision = 100;
+    let semanticClarity = 100;
 
     if (actionItems.length > 0) {
       let assignedCount = 0;
       let deadlineCount = 0;
+      let clearTaskCount = 0;
 
       actionItems.forEach((item) => {
         if (item.owner && item.owner.toLowerCase() !== 'unassigned' && item.owner.trim().length > 0) {
@@ -32,14 +34,32 @@ export const SummaryTab: React.FC<SummaryTabProps> = ({ data, isDarkMode = false
         ) {
           deadlineCount++;
         }
+        if (item.task && item.task.trim().length >= 12 && item.task.trim().includes(' ')) {
+          clearTaskCount++;
+        }
       });
 
       ownerAttribution = Math.round((assignedCount / actionItems.length) * 100);
       deadlinePrecision = Math.round((deadlineCount / actionItems.length) * 100);
+      semanticClarity = Math.round((clearTaskCount / actionItems.length) * 100);
     }
 
-    const semanticClarity = 95;
-    const decisionAgreement = decisions.length > 0 ? 95 : 90;
+    let decisionAgreement = 100;
+    if (decisions.length > 0) {
+      let completeDecisionsCount = 0;
+      decisions.forEach((dec) => {
+        const isString = typeof dec === 'string';
+        const title = isString ? dec : dec.title;
+        const details = isString ? '' : dec.details;
+        const hasTitle = Boolean(title && title.trim().length > 5);
+        const hasStatus = isString || Boolean(dec.status && ['Approved', 'Delayed', 'Rejected', 'Pending'].includes(dec.status));
+        const hasDetails = !isString ? Boolean(details && details.trim().length > 5) : true;
+        if (hasTitle && hasStatus && hasDetails) {
+          completeDecisionsCount++;
+        }
+      });
+      decisionAgreement = Math.round((completeDecisionsCount / decisions.length) * 100);
+    }
 
     const overallScore = Math.round(
       ownerAttribution * 0.35 +

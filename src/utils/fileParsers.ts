@@ -1,6 +1,6 @@
 import { jsPDF } from 'jspdf';
 import mammoth from 'mammoth';
-import * as pdfjsLib from 'pdfjs-dist';
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs';
 
 // Configure pdfjs worker to use unpkg cdn bundle or disable worker for pure client fallback
 if (typeof window !== 'undefined' && 'Worker' in window) {
@@ -186,8 +186,9 @@ export function generatePdfReport(data: any) {
   doc.setFontSize(10);
   doc.setTextColor(110, 120, 135);
   const dateStr = data.date || new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  const coverageScore = data.confidence_metrics?.overallScore || 90;
-  doc.text(`Generated on: ${dateStr}   |   Extraction Coverage: ${coverageScore}%`, margin, cursorY);
+  const coverageScore = typeof data.confidence_metrics?.overallScore === 'number' ? data.confidence_metrics.overallScore : null;
+  const coverageText = coverageScore !== null ? `   |   Extraction Coverage: ${coverageScore}%` : '';
+  doc.text(`Generated on: ${dateStr}${coverageText}`, margin, cursorY);
   cursorY += 20;
 
   // Horizontal Rule
