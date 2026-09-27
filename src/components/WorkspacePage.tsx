@@ -22,6 +22,7 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
   const [progressStep, setProgressStep] = useState(0);
   const [showExportModal, setShowExportModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [analysisNotice, setAnalysisNotice] = useState<string | null>(null);
 
   // Default transcript loaded from PRD sample
   const [transcriptText, setTranscriptText] = useState(SAMPLE_TRANSCRIPTS[0].content);
@@ -103,10 +104,20 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
       }
 
       setAnalysisData(result.data);
+      if (result.notice) {
+        setAnalysisNotice(result.notice);
+      } else {
+        setAnalysisNotice(null);
+      }
+      setErrorMessage(null);
       setActiveTab('summary');
     } catch (err: any) {
       console.error('Analysis error:', err);
-      setErrorMessage(err?.message || 'An error occurred while contacting the AI service.');
+      let msg = err?.message || 'An error occurred while contacting the AI service.';
+      if (msg.includes('RESOURCE_EXHAUSTED') || msg.includes('429')) {
+        msg = 'Free-tier AI request limit was momentarily reached. Please wait ~20 seconds before retrying.';
+      }
+      setErrorMessage(msg);
     } finally {
       setIsProcessing(false);
       setProgressStep(0);
@@ -392,6 +403,19 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
               <span>Risks: <strong className="text-[#131b2e] dark:text-white">{analysisData?.risks?.length || 0}</strong></span>
             </div>
           </div>
+
+          {/* Analysis Notice Alert */}
+          {analysisNotice && (
+            <div className="mx-6 mt-4 p-3 bg-blue-50 dark:bg-slate-800 border border-blue-200 dark:border-slate-700 text-[#005bbf] dark:text-blue-300 rounded-xl text-xs flex items-center justify-between gap-2 animate-fadeIn">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-base">offline_bolt</span>
+                <span>{analysisNotice}</span>
+              </div>
+              <button onClick={() => setAnalysisNotice(null)} className="text-blue-400 hover:text-blue-600 cursor-pointer">
+                <span className="material-symbols-outlined text-sm">close</span>
+              </button>
+            </div>
+          )}
 
           {/* Tab Content Body */}
           <div className="p-6 flex-1 overflow-y-auto custom-scrollbar space-y-6">
