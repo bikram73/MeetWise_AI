@@ -630,30 +630,30 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
       </section>
 
       {/* FAQ Section */}
-      <section className="py-24 bg-white" id="faq">
+      <section className="py-12 md:py-24 bg-white" id="faq">
         <div className="max-w-3xl mx-auto px-4 md:px-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">Common Questions</h2>
-            <p className="text-[#414754]">Everything you need to know about the platform.</p>
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2 md:mb-4">Common Questions</h2>
+            <p className="text-xs md:text-base text-[#414754]">Everything you need to know about the platform.</p>
           </div>
-          <div className="space-y-4">
+          <div className="space-y-2.5 md:space-y-4">
             {faqs.map((faq, idx) => (
-              <div key={idx} className="bg-[#f2f3ff] rounded-2xl border border-[#c1c6d6]/20 overflow-hidden">
+              <div key={idx} className="bg-[#f2f3ff] rounded-xl md:rounded-2xl border border-[#c1c6d6]/20 overflow-hidden shadow-2xs">
                 <button
                   onClick={() => toggleFaq(idx)}
-                  className="w-full flex justify-between items-center p-6 text-left cursor-pointer focus:outline-none"
+                  className="w-full flex justify-between items-center p-3.5 sm:p-4 md:p-6 text-left cursor-pointer focus:outline-none gap-3"
                 >
-                  <span className="text-lg font-semibold">{faq.q}</span>
+                  <span className="text-xs sm:text-sm md:text-lg font-semibold leading-snug">{faq.q}</span>
                   <span
-                    className={`material-symbols-outlined transition-transform duration-200 ${
-                      openFaq === idx ? 'rotate-180' : ''
+                    className={`material-symbols-outlined text-[18px] md:text-[24px] text-slate-500 shrink-0 transition-transform duration-200 ${
+                      openFaq === idx ? 'rotate-180 text-[#005bbf]' : ''
                     }`}
                   >
                     expand_more
                   </span>
                 </button>
                 {openFaq === idx && (
-                  <div className="px-6 pb-6 text-[#414754] text-base border-t border-[#c1c6d6]/10 pt-4">
+                  <div className="px-3.5 pb-3.5 sm:px-4 sm:pb-4 md:px-6 md:pb-6 text-[#414754] text-[11px] sm:text-xs md:text-base border-t border-[#c1c6d6]/10 pt-2.5 sm:pt-3 md:pt-4 leading-relaxed">
                     {faq.a}
                   </div>
                 )}
