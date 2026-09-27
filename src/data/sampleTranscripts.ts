@@ -9,7 +9,7 @@ export interface SampleTranscript {
 export const SAMPLE_TRANSCRIPTS: SampleTranscript[] = [
   {
     id: 'project-sync',
-    title: 'Project Sync (PRD Sample)',
+    title: 'Project Sync',
     category: 'Engineering',
     description: 'Alice, Bob, Charlie, and David discussing dashboard redesign, API integration, testing, and performance.',
     content: `Project Sync Meeting
