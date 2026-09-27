@@ -254,11 +254,11 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({
           </div>
 
           <div className="flex items-center gap-2.5">
-            {/* History button for mobile and desktop quick access */}
+            {/* Mobile-only History button */}
             {onOpenHistory && (
               <button
                 onClick={onOpenHistory}
-                className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border ${
+                className={`md:hidden inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border ${
                   isDarkMode
                     ? 'border-slate-700 text-slate-300 hover:bg-slate-800'
                     : 'border-slate-200 text-slate-700 hover:bg-slate-50'
@@ -266,7 +266,6 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({
                 title="View previous transcripts and analyses"
               >
                 <span className="material-symbols-outlined text-[16px] text-[#1a73e8]">history</span>
-                <span className="hidden sm:inline">History</span>
               </button>
             )}
 
