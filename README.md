@@ -13,6 +13,25 @@
   <b>Turn messy, multi-hour meeting transcripts into structured action items, executive summaries, decision records, and technical risks in seconds.</b>
 </p>
 
+<p align="center">
+  <a href="https://meetwise-ai.netlify.app/"><img src="https://img.shields.io/badge/🚀%20Live%20Demo-meetwise--ai.netlify.app-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" alt="Live Demo" /></a>
+  &nbsp;
+  <a href="https://github.com/bikram73/MeetWise_AI"><img src="https://img.shields.io/badge/💻%20GitHub%20Repo-bikram73%2FMeetWise__AI-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub Repository" /></a>
+</p>
+
+</div>
+
+---
+
+# 🔗 Quick Links
+
+<div align="center">
+
+| **Resource** | **URL / Link** | **Status** |
+|:---|:---|:---:|
+| **🌐 Live Web App** | [https://meetwise-ai.netlify.app/](https://meetwise-ai.netlify.app/) | ![Netlify Status](https://img.shields.io/badge/Deployed-Live-success?style=flat-square) |
+| **💻 GitHub Repository** | [https://github.com/bikram73/MeetWise_AI](https://github.com/bikram73/MeetWise_AI) | ![GitHub Repo](https://img.shields.io/badge/Repository-Open%20Source-blue?style=flat-square) |
+
 </div>
 
 ---
@@ -23,6 +42,8 @@
 
 | **<div align="center">📖 Description</div>** | **<div align="center">🚀 Section</div>** |
 |--------------------------------------------------------------|------------------------------------------------|
+| <div align="center">**Experience the live production application on Netlify.** 👉</div> | <div align="center"><a href="https://meetwise-ai.netlify.app/"><img src="https://img.shields.io/badge/🌐%20Live%20Demo-00C7B7?style=for-the-badge" /></a></div> |
+| <div align="center">**Access the official source code on GitHub.** 👉</div> | <div align="center"><a href="https://github.com/bikram73/MeetWise_AI"><img src="https://img.shields.io/badge/💻%20GitHub%20Repo-181717?style=for-the-badge" /></a></div> |
 | <div align="center">**View the project features and capabilities.** 👉</div> | <div align="center"><a href="#features"><img src="https://img.shields.io/badge/✨%20Features-4F46E5?style=for-the-badge" /></a></div> |
 | <div align="center">**View the technologies, frameworks, and programming languages used.** 👉</div> | <div align="center"><a href="#tech-stack"><img src="https://img.shields.io/badge/🛠️%20Tech%20Stack-0891B2?style=for-the-badge" /></a></div> |
 | <div align="center">**Explore the project's folder and file organization.** 👉</div> | <div align="center"><a href="#file-structure"><img src="https://img.shields.io/badge/📂%20File%20Structure-10B981?style=for-the-badge" /></a></div> |
@@ -171,10 +192,10 @@ Follow these steps to run MeetWise AI locally on your system:
 ### 2️⃣ Clone Repository & Install Dependencies
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/meetwise-ai.git
+git clone https://github.com/bikram73/MeetWise_AI.git
 
 # Enter project directory
-cd meetwise-ai
+cd MeetWise_AI
 
 # Install dependencies
 npm install
