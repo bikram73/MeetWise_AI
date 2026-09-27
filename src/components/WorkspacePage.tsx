@@ -217,45 +217,52 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Preset Selector */}
-            <div className="hidden xl:flex items-center gap-2 text-xs">
-              <span className="text-[#727785] font-medium">Sample:</span>
-              <select
-                value={selectedPresetId}
-                onChange={(e) => handleSelectPreset(e.target.value)}
-                className={`px-2.5 py-1.5 rounded-lg border text-xs ${
-                  isDarkMode ? 'bg-slate-950 border-slate-700 text-slate-200' : 'bg-white border-[#c1c6d6]/40 text-[#131b2e]'
-                } focus:outline-none cursor-pointer`}
-              >
-                {SAMPLE_TRANSCRIPTS.map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.title}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             {/* Theme Toggle */}
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className={`p-2 rounded-lg border ${
+              className={`p-2 rounded-xl border ${
                 isDarkMode ? 'border-slate-700 text-amber-400 hover:bg-slate-800' : 'border-[#c1c6d6]/40 text-[#414754] hover:bg-[#f2f3ff]'
               } transition-colors cursor-pointer`}
               title="Toggle Dark/Light Mode"
             >
-              <span className="material-symbols-outlined text-[20px]">
+              <span className="material-symbols-outlined text-[19px]">
                 {isDarkMode ? 'light_mode' : 'dark_mode'}
               </span>
             </button>
 
-            {/* Home Page Link */}
+            {/* New Meeting action */}
             <button
-              onClick={onBackToLanding}
-              className="inline-flex items-center gap-1.5 bg-[#1a73e8] hover:bg-[#005bbf] text-white px-3.5 py-2 rounded-lg font-semibold text-xs transition-all shadow-sm cursor-pointer"
+              onClick={handleClearTranscript}
+              className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border ${
+                isDarkMode
+                  ? 'border-slate-700 text-slate-300 hover:bg-slate-800'
+                  : 'border-[#c1c6d6]/50 text-[#414754] hover:bg-[#f2f3ff]'
+              } transition-colors cursor-pointer`}
+              title="Start a new meeting transcript"
             >
-              <span className="material-symbols-outlined text-[16px]">home</span>
-              <span className="hidden sm:inline">Home</span>
+              <span className="material-symbols-outlined text-[16px] text-[#1a73e8]">add_circle</span>
+              <span>New Meeting</span>
             </button>
+
+            {/* Export button */}
+            <button
+              onClick={() => setShowExportModal(true)}
+              className="inline-flex items-center gap-1.5 bg-[#1a73e8] hover:bg-[#005bbf] text-white px-3.5 py-1.5 rounded-xl font-semibold text-xs transition-all shadow-sm shadow-[#1a73e8]/20 cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[16px]">file_download</span>
+              <span>Export</span>
+            </button>
+
+            {/* User Profile Pill */}
+            <div className={`flex items-center gap-2 pl-2 border-l ${isDarkMode ? 'border-slate-800' : 'border-[#c1c6d6]/40'}`}>
+              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#1a73e8] to-[#4338ca] text-white flex items-center justify-center font-bold text-xs shadow-sm">
+                BM
+              </div>
+              <div className="hidden lg:flex flex-col text-left">
+                <span className={`text-xs font-semibold leading-tight ${isDarkMode ? 'text-slate-200' : 'text-[#131b2e]'}`}>Bikram</span>
+                <span className="text-[10px] text-emerald-500 font-semibold leading-none">Pro Plan</span>
+              </div>
+            </div>
           </div>
         </div>
       </nav>

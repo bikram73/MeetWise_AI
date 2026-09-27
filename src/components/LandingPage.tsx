@@ -90,12 +90,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
             <a className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium" href="#demo">Demo</a>
             <a className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium" href="#faq">Docs</a>
           </div>
-          <button
-            onClick={onOpenWorkspace}
-            className="bg-[#1a73e8] hover:bg-[#005bbf] text-white px-6 py-2 rounded-lg font-semibold text-sm scale-95 active:scale-90 transition-all shadow-md cursor-pointer"
-          >
-            Open Workspace
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onOpenWorkspace}
+              className="bg-[#1a73e8] hover:bg-[#005bbf] text-white px-5 py-2 rounded-xl font-semibold text-sm scale-95 active:scale-90 transition-all shadow-md shadow-[#1a73e8]/20 flex items-center gap-1.5 cursor-pointer"
+            >
+              <span>Open Workspace</span>
+              <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -104,7 +107,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
         <div className="max-w-[1280px] mx-auto px-4 md:px-10 text-center">
           <div className="inline-flex items-center gap-2 bg-[#4d8efe]/10 text-[#005bbf] border border-[#4d8efe]/20 px-4 py-1.5 rounded-full mb-8">
             <span className="material-symbols-outlined text-[18px]">auto_awesome</span>
-            <span className="text-xs font-semibold">v2.0 Now Live • Next-Gen AI Engine</span>
+            <span className="text-xs font-semibold">Now Live • Next-Gen AI Engine</span>
           </div>
           <h1 className="text-4xl md:text-[64px] font-bold max-w-4xl mx-auto leading-tight mb-6 tracking-tight">
             Turn Meeting Notes Into <span className="ai-gradient-text">Actionable Results</span> with AI
