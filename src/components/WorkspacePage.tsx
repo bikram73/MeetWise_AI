@@ -12,9 +12,10 @@ import { ExportModal } from './ExportModal';
 
 interface WorkspacePageProps {
   onBackToLanding: () => void;
+  onNavigateSection?: (sectionId?: string) => void;
 }
 
-export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding }) => {
+export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, onNavigateSection }) => {
   const [activeTab, setActiveTab] = useState<'summary' | 'decisions' | 'actions' | 'discussion' | 'json' | 'markdown'>('summary');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -158,70 +159,106 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding })
 
   return (
     <div className={`min-h-screen ${isDarkMode ? 'bg-[#0f172a] text-slate-100' : 'bg-[#faf8ff] text-[#131b2e]'} font-sans flex flex-col transition-colors duration-200`}>
-      {/* Header */}
-      <header className={`sticky top-0 z-40 ${isDarkMode ? 'bg-slate-900/90 border-slate-800' : 'bg-white/90 border-[#c1c6d6]/20'} backdrop-blur-md border-b h-16 flex items-center px-4 md:px-8 justify-between`}>
-        <div className="flex items-center gap-6">
-          <button
-            onClick={onBackToLanding}
-            className="flex items-center gap-2.5 cursor-pointer hover:opacity-80 transition-opacity"
-          >
-            <div className="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25">
-              <svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                <path d="m9 10 2 2 4-4" />
-              </svg>
-            </div>
-            <span className="text-xl font-bold text-[#1a73e8]">
-              MeetWise AI
-            </span>
-          </button>
-          <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#005bbf]/10 text-[#005bbf] hidden sm:inline-block">
-            AI Workspace
-          </span>
-        </div>
-
-        <div className="flex items-center gap-3">
-          {/* Preset Selector */}
-          <div className="hidden lg:flex items-center gap-2 text-xs">
-            <span className="text-[#727785] font-medium">Sample Transcripts:</span>
-            <select
-              value={selectedPresetId}
-              onChange={(e) => handleSelectPreset(e.target.value)}
-              className={`px-2.5 py-1.5 rounded-lg border text-xs ${
-                isDarkMode ? 'bg-slate-950 border-slate-700 text-slate-200' : 'bg-white border-[#c1c6d6]/40 text-[#131b2e]'
-              } focus:outline-none cursor-pointer`}
+      {/* Top Navigation Bar */}
+      <nav className={`sticky top-0 z-50 w-full ${isDarkMode ? 'bg-slate-900/90 border-slate-800' : 'bg-white/90 border-[#c1c6d6]/20'} backdrop-blur-md border-b shadow-sm h-16 flex items-center`}>
+        <div className="flex justify-between items-center px-4 md:px-8 w-full max-w-[1440px] mx-auto">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={onBackToLanding}
+              className="flex items-center gap-2.5 cursor-pointer hover:opacity-80 transition-opacity"
             >
-              {SAMPLE_TRANSCRIPTS.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.title}
-                </option>
-              ))}
-            </select>
+              <div className="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25">
+                <svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  <path d="m9 10 2 2 4-4" />
+                </svg>
+              </div>
+              <span className="text-xl font-bold text-[#1a73e8]">
+                MeetWise AI
+              </span>
+            </button>
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#005bbf]/10 text-[#005bbf] hidden sm:inline-block">
+              AI Workspace
+            </span>
           </div>
 
-          {/* Theme Toggle */}
-          <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
-            className={`p-2 rounded-lg border ${
-              isDarkMode ? 'border-slate-700 text-amber-400 hover:bg-slate-800' : 'border-[#c1c6d6]/40 text-[#414754] hover:bg-[#f2f3ff]'
-            } transition-colors cursor-pointer`}
-            title="Toggle Dark/Light Mode"
-          >
-            <span className="material-symbols-outlined text-[20px]">
-              {isDarkMode ? 'light_mode' : 'dark_mode'}
-            </span>
-          </button>
+          {/* Navigation Links with Home button at the beginning */}
+          <div className="hidden md:flex items-center gap-8">
+            <button
+              onClick={() => onNavigateSection?.() || onBackToLanding()}
+              className={`${isDarkMode ? 'text-slate-300 hover:text-white' : 'text-[#414754] hover:text-[#005bbf]'} transition-colors font-medium cursor-pointer`}
+            >
+              Home
+            </button>
+            <button
+              onClick={() => onNavigateSection?.('features') || onBackToLanding()}
+              className={`${isDarkMode ? 'text-slate-300 hover:text-white' : 'text-[#414754] hover:text-[#005bbf]'} transition-colors font-medium cursor-pointer`}
+            >
+              Features
+            </button>
+            <button
+              onClick={() => onNavigateSection?.('workflow') || onBackToLanding()}
+              className={`${isDarkMode ? 'text-slate-300 hover:text-white' : 'text-[#414754] hover:text-[#005bbf]'} transition-colors font-medium cursor-pointer`}
+            >
+              Workflow
+            </button>
+            <button
+              onClick={() => onNavigateSection?.('demo') || onBackToLanding()}
+              className={`${isDarkMode ? 'text-slate-300 hover:text-white' : 'text-[#414754] hover:text-[#005bbf]'} transition-colors font-medium cursor-pointer`}
+            >
+              Demo
+            </button>
+            <button
+              onClick={() => onNavigateSection?.('faq') || onBackToLanding()}
+              className={`${isDarkMode ? 'text-slate-300 hover:text-white' : 'text-[#414754] hover:text-[#005bbf]'} transition-colors font-medium cursor-pointer`}
+            >
+              Docs
+            </button>
+          </div>
 
-          {/* Home Page Link */}
-          <button
-            onClick={onBackToLanding}
-            className="inline-flex items-center gap-1.5 bg-[#1a73e8] hover:bg-[#005bbf] text-white px-3.5 py-2 rounded-lg font-semibold text-xs transition-all shadow-sm cursor-pointer"
-          >
-            <span className="material-symbols-outlined text-[16px]">home</span>
-            <span className="hidden sm:inline">Landing Page</span>
-          </button>
+          <div className="flex items-center gap-3">
+            {/* Preset Selector */}
+            <div className="hidden xl:flex items-center gap-2 text-xs">
+              <span className="text-[#727785] font-medium">Sample:</span>
+              <select
+                value={selectedPresetId}
+                onChange={(e) => handleSelectPreset(e.target.value)}
+                className={`px-2.5 py-1.5 rounded-lg border text-xs ${
+                  isDarkMode ? 'bg-slate-950 border-slate-700 text-slate-200' : 'bg-white border-[#c1c6d6]/40 text-[#131b2e]'
+                } focus:outline-none cursor-pointer`}
+              >
+                {SAMPLE_TRANSCRIPTS.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Theme Toggle */}
+            <button
+              onClick={() => setIsDarkMode(!isDarkMode)}
+              className={`p-2 rounded-lg border ${
+                isDarkMode ? 'border-slate-700 text-amber-400 hover:bg-slate-800' : 'border-[#c1c6d6]/40 text-[#414754] hover:bg-[#f2f3ff]'
+              } transition-colors cursor-pointer`}
+              title="Toggle Dark/Light Mode"
+            >
+              <span className="material-symbols-outlined text-[20px]">
+                {isDarkMode ? 'light_mode' : 'dark_mode'}
+              </span>
+            </button>
+
+            {/* Home Page Link */}
+            <button
+              onClick={onBackToLanding}
+              className="inline-flex items-center gap-1.5 bg-[#1a73e8] hover:bg-[#005bbf] text-white px-3.5 py-2 rounded-lg font-semibold text-xs transition-all shadow-sm cursor-pointer"
+            >
+              <span className="material-symbols-outlined text-[16px]">home</span>
+              <span className="hidden sm:inline">Home</span>
+            </button>
+          </div>
         </div>
-      </header>
+      </nav>
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-[1440px] w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">

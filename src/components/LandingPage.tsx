@@ -69,7 +69,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
       {/* Top Navigation Bar */}
       <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-[#c1c6d6]/20 shadow-sm h-16 flex items-center">
         <div className="flex justify-between items-center px-4 md:px-10 w-full max-w-[1280px] mx-auto">
-          <div className="flex items-center gap-2.5 cursor-pointer" onClick={onOpenWorkspace}>
+          <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <div className="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25">
               <svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
@@ -79,10 +79,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
             <span className="text-xl font-bold text-[#1a73e8]">MeetWise AI</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <a className="text-[#414754] hover:text-[#005bbf] transition-colors" href="#features">Features</a>
-            <a className="text-[#414754] hover:text-[#005bbf] transition-colors" href="#workflow">Workflow</a>
-            <a className="text-[#414754] hover:text-[#005bbf] transition-colors" href="#demo">Demo</a>
-            <a className="text-[#414754] hover:text-[#005bbf] transition-colors" href="#faq">Docs</a>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium cursor-pointer"
+            >
+              Home
+            </button>
+            <a className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium" href="#features">Features</a>
+            <a className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium" href="#workflow">Workflow</a>
+            <a className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium" href="#demo">Demo</a>
+            <a className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium" href="#faq">Docs</a>
           </div>
           <button
             onClick={onOpenWorkspace}
@@ -119,33 +125,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
             >
               Watch Workflow
             </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Trusted By Logos */}
-      <section className="py-12 border-y border-[#c1c6d6]/20 bg-white">
-        <div className="max-w-[1280px] mx-auto px-4 md:px-10">
-          <p className="text-center text-xs uppercase tracking-widest text-[#727785] font-semibold mb-8">
-            POWERING WORKFLOWS FOR MODERN TEAMS
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded bg-[#1A73E8] flex items-center justify-center text-white font-bold text-sm">MW</div>
-              <span className="font-bold text-lg">MeetWise</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded bg-[#00D8FF]"></div>
-              <span className="font-bold text-lg">React</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded bg-[#38BDF8]"></div>
-              <span className="font-bold text-lg">Tailwind</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded bg-[#3178C6] flex items-center justify-center text-white font-bold text-sm">TS</div>
-              <span className="font-bold text-lg">TypeScript</span>
-            </div>
           </div>
         </div>
       </section>
