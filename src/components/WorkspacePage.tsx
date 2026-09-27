@@ -158,7 +158,7 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
   };
 
   return (
-    <div className={`min-h-screen ${isDarkMode ? 'bg-[#0f172a] text-slate-100' : 'bg-[#faf8ff] text-[#131b2e]'} font-sans flex flex-col transition-colors duration-200`}>
+    <div className={`min-h-screen ${isDarkMode ? 'bg-[#0f172a] text-slate-100' : 'bg-white text-[#131b2e]'} font-sans flex flex-col transition-colors duration-200`}>
       {/* Top Navigation Bar */}
       <nav className={`sticky top-0 z-50 w-full ${isDarkMode ? 'bg-slate-900/90 border-slate-800' : 'bg-white/90 border-[#c1c6d6]/20'} backdrop-blur-md border-b shadow-sm h-16 flex items-center`}>
         <div className="flex justify-between items-center px-4 md:px-8 w-full max-w-[1440px] mx-auto">

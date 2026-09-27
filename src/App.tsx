@@ -24,7 +24,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#faf8ff]">
+    <div className="min-h-screen bg-white">
       {currentView === 'landing' ? (
         <LandingPage onOpenWorkspace={() => setCurrentView('workspace')} />
       ) : (

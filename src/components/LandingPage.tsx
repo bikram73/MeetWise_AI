@@ -65,7 +65,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
   ];
 
   return (
-    <div className="bg-[#faf8ff] text-[#131b2e] font-sans overflow-x-hidden">
+    <div className="bg-white text-[#131b2e] font-sans overflow-x-hidden">
       {/* Top Navigation Bar */}
       <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-[#c1c6d6]/20 shadow-sm h-16 flex items-center">
         <div className="flex justify-between items-center px-4 md:px-10 w-full max-w-[1280px] mx-auto">

@@ -17,7 +17,7 @@ export const ProcessingAnimationModal: React.FC<ProcessingAnimationModalProps> =
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 max-w-md w-full shadow-2xl border border-white/40 dark:border-slate-800 text-center space-y-6 animate-scaleUp">
+      <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-slate-200 text-center space-y-6 animate-scaleUp">
         {/* Animated Brain / Gem Logo */}
         <div className="relative w-20 h-20 mx-auto">
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-[#005bbf] to-[#732de4] animate-ping opacity-25"></div>
