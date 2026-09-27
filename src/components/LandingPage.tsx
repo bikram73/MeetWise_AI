@@ -25,44 +25,44 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
 
   const faqs = [
     {
-      q: 'How secure is my data?',
-      a: 'We use enterprise-grade SOC2 compliant infrastructure. Transcripts are encrypted at rest and in transit, and we never use your proprietary data to train our public models.',
+      q: 'How does MeetWise AI protect my meeting data?',
+      a: 'All data is processed strictly via enterprise TLS encryption. Analyzed transcripts and intelligence data are saved locally inside your browser’s localStorage. We never retain, store on third-party servers, or use your proprietary dialogue to train public AI models.',
     },
     {
-      q: 'Which video platforms are supported?',
-      a: 'MeetWise works with any platform that can generate a text transcript, including Zoom, Microsoft Teams, Google Meet, Webex, and Otter.ai.',
+      q: 'Which file formats and video platforms are supported?',
+      a: 'MeetWise AI natively accepts .txt, .vtt (Zoom & Google Meet captions), .srt (Subtitles), .md (Markdown), .docx (Word), and .pdf documents, as well as direct text paste.',
     },
     {
-      q: 'Can I export to Notion?',
-      a: 'Yes, we offer direct integrations with Notion, Slack, and Trello via our API.',
+      q: 'What export options are available?',
+      a: 'You can export complete meeting reports in Markdown (.md) for Notion or GitHub, strongly-typed JSON for Jira/Linear/Zapier, print-ready PDF reports, or one-click copy to clipboard.',
     },
     {
-      q: 'What is the word limit?',
-      a: 'Pro users can process transcripts up to 50,000 words per session.',
+      q: 'What transcript length can MeetWise AI handle?',
+      a: 'MeetWise AI processes full meetings up to 100,000 characters (approximately 15,000–20,000 words or 60–90 minute discussions) in a single pass.',
     },
     {
-      q: 'Is there a free trial?',
-      a: 'Yes, your first 5 meetings are completely free to process.',
+      q: 'Is there a cost or subscription required?',
+      a: 'MeetWise AI is free to use with all features enabled, including sample presets, file uploads, decision detection, action item assignment, and history persistence.',
     },
     {
-      q: 'How accurate is owner recognition?',
-      a: 'We achieve 98% accuracy in Speaker-to-Action mapping in clear transcripts.',
+      q: 'How accurate is speaker and owner recognition?',
+      a: 'Our deterministic intelligence engine cross-verifies speaker dialogue, assignment pronouns, and context to reliably attribute action items, deadlines, and priorities.',
     },
     {
-      q: 'Can I use my own API key?',
-      a: 'Enterprise plans support BYO-Key for OpenAI or Anthropic.',
+      q: 'Which AI model powers MeetWise AI?',
+      a: 'MeetWise AI runs on Google Gemini models (Gemini 3 Flash & Pro series) with automated multi-tier failover and offline heuristic extraction safeguards.',
     },
     {
-      q: 'Do you support multiple languages?',
-      a: 'Currently we support 40+ languages including Spanish, French, German, and Mandarin.',
+      q: 'Does it save my previous meetings?',
+      a: 'Yes! All analyzed meetings and their action items, summaries, and confidence scores are automatically stored in your browser LocalStorage for instant search and one-click reload.',
     },
     {
-      q: 'How does billing work?',
-      a: 'Choose between monthly subscriptions or pay-as-you-go credits.',
+      q: 'What happens if I work offline or lose connectivity?',
+      a: 'MeetWise AI includes an offline zero-hallucination heuristic engine that safely extracts speaker turns, tasks, decisions, and deadlines directly in-memory without breaking.',
     },
     {
-      q: 'Is there an offline mode?',
-      a: 'MeetWise requires an internet connection to access our AI processing cluster.',
+      q: 'Can I customize the extraction focus?',
+      a: 'Yes, you can provide custom prompt directives in the workspace to prioritize technical risks, security blockers, executive milestones, or specific stakeholder deliverables.',
     },
   ];
 
