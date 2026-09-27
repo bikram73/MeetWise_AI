@@ -86,13 +86,20 @@
 - Upload and analyze files in **`.txt`**, **`.vtt`** (web video text tracks), **`.srt`** (subtitles), **`.md`**, **`.pdf`**, and **`.docx`**.
 - Intelligent client-side parser removes timestamps and normalizes speaker turns before AI ingestion.
 
-### ⚡ 6. Multi-Format Instant Export
+### 🗂️ 6. Transcript Analysis History & LocalStorage Persistence
+- **Zero-Configuration Local Storage**: Automatically saves all analyzed transcripts and structured AI extractions directly into your browser's `localStorage` (`meetwise_transcript_history_v1`).
+- **Initial Clean State**: Starts 100% empty until you run your first analysis.
+- **Dedicated History Dashboard**: Filter, search, and review past meeting analyses with date stamps, action counts, and consensus metrics.
+- **One-Click Workspace Reloading**: Instantly reopen and restore any previous meeting transcript and its results back into the live Workspace editor.
+- **Privacy First & Data Management**: All meeting records stay on your machine with individual deletion and full history wipe capabilities.
+
+### ⚡ 7. Multi-Format Instant Export
 - **Markdown (.md)**: Production-grade formatted meeting minutes ready for Notion, GitHub, Obsidian, or Confluence.
 - **JSON (.json)**: Strongly typed JSON schema for Jira, Linear, Asana, Zapier, or database persistence.
 - **PDF Report**: High-resolution print-optimized executive report.
 - **Clipboard Sync**: One-click instant copy for Slack, Microsoft Teams, or Google Docs.
 
-### 💡 7. 5 Real-World Curated Sample Transcripts
+### 💡 8. 5 Real-World Curated Sample Transcripts
 1. **Project Sync**: Engineering team aligning on dashboard redesign, API integrations, and performance testing.
 2. **Q3 Strategy & Roadmap Planning**: Executive discussion resolving Legacy Auth SSO/SAML vs. AI Workspace priorities.
 3. **Sprint Retrospective**: Frontend & platform review of CI/CD flakiness, branch conflicts, and QA bottlenecks.
@@ -165,6 +172,7 @@ meetwise-ai/
     │   ├── 📄 ActionItemsTable.tsx  # Editable task table with status/search/filter
     │   ├── 📄 DecisionsCard.tsx     # Decision records with impact tags
     │   ├── 📄 ExportModal.tsx       # Export modal (Markdown, JSON, PDF, Clipboard)
+    │   ├── 📄 HistoryPage.tsx       # Transcript history dashboard with localStorage data
     │   ├── 📄 JsonViewer.tsx        # Syntax-highlighted JSON viewer with download
     │   ├── 📄 LandingPage.tsx       # Marketing landing page with hero, features & FAQ
     │   ├── 📄 MarkdownViewer.tsx    # Live rendered Markdown preview and raw copy
@@ -174,7 +182,8 @@ meetwise-ai/
     ├── 📁 data/
     │   └── 📄 sampleTranscripts.ts  # 5 realistic meeting transcript datasets
     └── 📁 utils/
-        └── 📄 fileParsers.ts        # Client-side .vtt, .srt, .txt, .docx parser & export
+        ├── 📄 fileParsers.ts        # Client-side .vtt, .srt, .txt, .docx parser & export
+        └── 📄 historyStorage.ts     # Browser LocalStorage history manager & persistence
 ```
 
 ---
