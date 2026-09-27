@@ -217,23 +217,10 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Theme Toggle */}
-            <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className={`p-2 rounded-xl border ${
-                isDarkMode ? 'border-slate-700 text-amber-400 hover:bg-slate-800' : 'border-[#c1c6d6]/40 text-[#414754] hover:bg-[#f2f3ff]'
-              } transition-colors cursor-pointer`}
-              title="Toggle Dark/Light Mode"
-            >
-              <span className="material-symbols-outlined text-[19px]">
-                {isDarkMode ? 'light_mode' : 'dark_mode'}
-              </span>
-            </button>
-
             {/* New Meeting action */}
             <button
               onClick={handleClearTranscript}
-              className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border ${
                 isDarkMode
                   ? 'border-slate-700 text-slate-300 hover:bg-slate-800'
                   : 'border-[#c1c6d6]/50 text-[#414754] hover:bg-[#f2f3ff]'
@@ -252,17 +239,6 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
               <span className="material-symbols-outlined text-[16px]">file_download</span>
               <span>Export</span>
             </button>
-
-            {/* User Profile Pill */}
-            <div className={`flex items-center gap-2 pl-2 border-l ${isDarkMode ? 'border-slate-800' : 'border-[#c1c6d6]/40'}`}>
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#1a73e8] to-[#4338ca] text-white flex items-center justify-center font-bold text-xs shadow-sm">
-                BM
-              </div>
-              <div className="hidden lg:flex flex-col text-left">
-                <span className={`text-xs font-semibold leading-tight ${isDarkMode ? 'text-slate-200' : 'text-[#131b2e]'}`}>Bikram</span>
-                <span className="text-[10px] text-emerald-500 font-semibold leading-none">Pro Plan</span>
-              </div>
-            </div>
           </div>
         </div>
       </nav>
