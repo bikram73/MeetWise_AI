@@ -347,8 +347,3 @@ Benchmarked across 5 sequential test runs on Linux/Node.js v22.23.2 against `/ap
 - **No Long-Term Data Logging**: Transcripts submitted to `/api/analyze` are processed in ephemeral memory and never written to cold storage.
 - **Zero Third-Party Telemetry**: No tracking scripts, analytics cookies, or behavioral pixels are loaded.
 - **Enterprise Safe**: Gemini API requests use the Google Cloud developer guidelines with strict non-retention policies.
-
----
-
-## 📜 License
-Distributed under the **MIT License**. Free for commercial and private use.
