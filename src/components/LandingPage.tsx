@@ -70,13 +70,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
       <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-[#c1c6d6]/20 shadow-sm h-16 flex items-center">
         <div className="flex justify-between items-center px-4 md:px-10 w-full max-w-[1280px] mx-auto">
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25">
-              <svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <div className="w-9 h-9 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25 shrink-0">
+              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 <path d="m9 10 2 2 4-4" />
               </svg>
             </div>
-            <span className="text-xl font-bold text-[#1a73e8]">MeetWise AI</span>
+            <div className="flex flex-col text-left">
+              <span className="text-lg md:text-xl font-bold text-[#1a73e8] leading-tight">MeetWise AI</span>
+              <span className="text-[10px] md:text-[11px] font-semibold text-[#005bbf] tracking-wide leading-none">AI Workspace</span>
+            </div>
           </div>
           <div className="hidden md:flex items-center gap-8">
             <button
@@ -513,13 +516,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
         <div className="max-w-[1280px] mx-auto px-4 md:px-10 flex flex-col md:flex-row justify-between gap-8">
           <div className="max-w-md">
             <div className="flex items-center gap-2.5 mb-6">
-              <div className="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25">
-                <svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <div className="w-9 h-9 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25 shrink-0">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   <path d="m9 10 2 2 4-4" />
                 </svg>
               </div>
-              <span className="text-xl font-bold text-[#1a73e8]">MeetWise AI</span>
+              <div className="flex flex-col text-left">
+                <span className="text-xl font-bold text-[#1a73e8] leading-tight">MeetWise AI</span>
+                <span className="text-[11px] font-semibold text-[#005bbf] tracking-wide leading-none">AI Workspace</span>
+              </div>
             </div>
             <p className="text-[#414754] text-sm leading-relaxed">
               The intelligent copilot for high-stakes professional environments.

@@ -162,24 +162,26 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
       {/* Top Navigation Bar */}
       <nav className={`sticky top-0 z-50 w-full ${isDarkMode ? 'bg-slate-900/90 border-slate-800' : 'bg-white/90 border-[#c1c6d6]/20'} backdrop-blur-md border-b shadow-sm h-16 flex items-center`}>
         <div className="flex justify-between items-center px-4 md:px-8 w-full max-w-[1440px] mx-auto">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center">
             <button
               onClick={onBackToLanding}
-              className="flex items-center gap-2.5 cursor-pointer hover:opacity-80 transition-opacity"
+              className="flex items-center gap-2.5 cursor-pointer hover:opacity-80 transition-opacity text-left"
             >
-              <div className="w-8 h-8 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25">
-                <svg className="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <div className="w-9 h-9 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25 shrink-0">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   <path d="m9 10 2 2 4-4" />
                 </svg>
               </div>
-              <span className="text-xl font-bold text-[#1a73e8]">
-                MeetWise AI
-              </span>
+              <div className="flex flex-col text-left">
+                <span className="text-lg md:text-xl font-bold text-[#1a73e8] leading-tight">
+                  MeetWise AI
+                </span>
+                <span className="text-[10px] md:text-[11px] font-semibold text-[#005bbf] tracking-wide leading-none">
+                  AI Workspace
+                </span>
+              </div>
             </button>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#005bbf]/10 text-[#005bbf] hidden sm:inline-block">
-              AI Workspace
-            </span>
           </div>
 
           {/* Navigation Links with Home button at the beginning */}
