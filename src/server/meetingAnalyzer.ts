@@ -393,7 +393,12 @@ export async function executeMeetingAnalysis(
   customPrompt?: string,
   apiKey?: string
 ): Promise<AnalyzeResult> {
-  const modelsToTry = ["gemini-3.8-flash", "gemini-flash-latest", "gemini-3.1-flash-lite"];
+  const modelsToTry = [
+    "gemini-3.8-flash",
+    "gemini-flash-latest",
+    "gemini-3.1-flash-lite",
+    "gemini-3.1-pro-preview"
+  ];
   const userContent = customPrompt
     ? `Custom Focus Directive: ${customPrompt}\n\nTranscript:\n${transcript}`
     : `Transcript to analyze:\n${transcript}`;
@@ -428,7 +433,8 @@ export async function executeMeetingAnalysis(
         successfulModel = model;
         break;
       } catch (err: any) {
-        console.warn(`Model ${model} encountered an error:`, err?.message || err);
+        // Log brief warn and smoothly cascade to the next model in waterfall
+        console.warn(`Model ${model} encountered an issue, trying next:`, err?.message || err);
         continue;
       }
     }
