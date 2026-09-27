@@ -317,6 +317,7 @@ Return ONLY a valid JSON object matching the requested schema.`;
     // Official recommended model sequence: gemini-3.8-flash, gemini-flash-latest, gemini-3.1-flash-lite
     const modelsToTry = ["gemini-3.8-flash", "gemini-flash-latest", "gemini-3.1-flash-lite"];
     let parsedData = null;
+    let successfulModel: string | null = null;
     let lastError: any = null;
 
     if (ai) {
@@ -334,6 +335,7 @@ Return ONLY a valid JSON object matching the requested schema.`;
 
           const responseText = response.text || "{}";
           parsedData = JSON.parse(responseText);
+          successfulModel = model;
           break; // Succeeded!
         } catch (err: any) {
           lastError = err;
@@ -357,6 +359,7 @@ Return ONLY a valid JSON object matching the requested schema.`;
     if (parsedData) {
       return res.json({
         success: true,
+        model: successfulModel,
         data: parsedData,
       });
     }
@@ -366,6 +369,7 @@ Return ONLY a valid JSON object matching the requested schema.`;
     const fallbackData = fallbackExtractTranscript(transcript, customPrompt);
     return res.json({
       success: true,
+      model: "local-heuristic-engine",
       data: fallbackData,
       isFallback: true,
       notice:
