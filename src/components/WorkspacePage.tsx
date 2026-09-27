@@ -239,23 +239,28 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
       </nav>
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-[1440px] w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <main className="flex-1 max-w-[1440px] w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Panel: Transcript Editor (5 cols) */}
         <section className={`lg:col-span-5 flex flex-col rounded-2xl border ${
           isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200/90'
-        } shadow-xs overflow-hidden min-h-[600px]`}>
-          <div className={`px-5 py-3.5 border-b ${
-            isDarkMode ? 'border-slate-800 bg-slate-900/70' : 'border-slate-200 bg-slate-50/70'
+        } shadow-sm overflow-hidden`}>
+          <div className={`px-5 py-4 border-b ${
+            isDarkMode ? 'border-slate-800 bg-slate-900/70' : 'border-slate-100 bg-slate-50/60'
           } flex flex-wrap justify-between items-center gap-2`}>
-            <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[#1a73e8]">description</span>
-              <h2 className="font-bold text-sm text-slate-900 dark:text-white">Transcript Editor</h2>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-slate-800 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                <span className="material-symbols-outlined text-[20px]">edit_note</span>
+              </div>
+              <div>
+                <h2 className="font-bold text-sm text-slate-900 dark:text-white leading-none">Transcript Editor</h2>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Paste dialogue or pick a sample</p>
+              </div>
             </div>
 
-            {/* File Upload Button */}
+            {/* File Upload Button & Clear */}
             <div className="flex items-center gap-2">
               <label className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-colors flex items-center gap-1.5 shadow-xs cursor-pointer">
-                <span className="material-symbols-outlined text-[16px] text-[#1a73e8]">upload_file</span>
+                <span className="material-symbols-outlined text-[16px] text-blue-600">upload_file</span>
                 Upload File
                 <input
                   type="file"
@@ -264,17 +269,19 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
                   className="hidden"
                 />
               </label>
-              <button
-                onClick={handleClearTranscript}
-                className="px-2 py-1 text-xs font-medium text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors cursor-pointer"
-                title="Clear Editor"
-              >
-                Clear
-              </button>
+              {transcriptText && (
+                <button
+                  onClick={handleClearTranscript}
+                  className="px-2 py-1 text-xs font-medium text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors cursor-pointer"
+                  title="Clear Editor"
+                >
+                  Clear
+                </button>
+              )}
             </div>
           </div>
 
-          <div className="p-4 flex-1 flex flex-col space-y-3">
+          <div className="p-4 flex-1 flex flex-col space-y-3.5">
             {/* Error Message Alert */}
             {errorMessage && (
               <div className="p-3 bg-red-50 border border-red-200 text-red-700 rounded-xl text-xs flex items-start gap-2 animate-fadeIn">
@@ -283,7 +290,7 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
                   <p className="font-bold">Notice</p>
                   <p>{errorMessage}</p>
                 </div>
-                <button onClick={() => setErrorMessage(null)} className="text-red-400 hover:text-red-700">
+                <button onClick={() => setErrorMessage(null)} className="text-red-400 hover:text-red-700 cursor-pointer">
                   <span className="material-symbols-outlined text-sm">close</span>
                 </button>
               </div>
@@ -297,45 +304,56 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
                 if (selectedPresetId) setSelectedPresetId(null);
                 if (errorMessage) setErrorMessage(null);
               }}
+              rows={8}
               className={`w-full p-4 rounded-xl border ${
-                isDarkMode ? 'bg-slate-950 border-slate-800 text-slate-200' : 'bg-white border-slate-200 text-slate-900'
-              } font-mono text-xs leading-relaxed resize-none focus:outline-none focus:border-[#1a73e8] focus:ring-4 focus:ring-[#1a73e8]/10 custom-scrollbar min-h-[190px] placeholder:text-slate-400`}
-              placeholder="Paste your meeting transcript here, or pick one of the 5 samples below..."
+                isDarkMode
+                  ? 'bg-slate-950 border-slate-800 text-slate-100 placeholder:text-slate-500'
+                  : 'bg-slate-50/50 focus:bg-white border-slate-200 text-slate-800 placeholder:text-slate-400'
+              } font-sans text-sm leading-relaxed resize-none focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 custom-scrollbar transition-all min-h-[190px]`}
+              placeholder="Paste your meeting transcript here (e.g. 'Alice: We need to complete redesign before July 30...'), or select one of the 5 samples below..."
             />
 
             {/* Counters and Clear */}
-            <div className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 pt-0.5">
-              <span>{charCount.toLocaleString()} characters · {wordCount.toLocaleString()} words</span>
-              {transcriptText && (
-                <button
-                  type="button"
-                  onClick={handleClearTranscript}
-                  className="text-xs text-red-500 hover:text-red-700 font-semibold cursor-pointer flex items-center gap-1 transition-colors"
-                >
-                  <span className="material-symbols-outlined text-[14px]">backspace</span>
-                  Clear Text
-                </button>
+            <div className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 px-1">
+              <span>
+                {charCount > 0 ? (
+                  <>
+                    <strong className="text-slate-700 dark:text-slate-200 font-semibold">{charCount.toLocaleString()}</strong> characters · <strong className="text-slate-700 dark:text-slate-200 font-semibold">{wordCount.toLocaleString()}</strong> words
+                  </>
+                ) : (
+                  'Editor ready for input'
+                )}
+              </span>
+              {selectedPresetId && (
+                <span className="text-[11px] font-semibold text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/50 px-2 py-0.5 rounded-full flex items-center gap-1 border border-blue-200 dark:border-blue-800">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                  Sample Loaded
+                </span>
               )}
             </div>
 
             {/* 5 Sample Transcripts down below the textarea */}
-            <div className="pt-2 border-t border-slate-200 dark:border-slate-800 space-y-2">
-              <div className="flex justify-between items-center">
-                <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[15px] text-[#1a73e8]">dataset</span>
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
+              <div className="flex justify-between items-center px-1">
+                <label className="text-[11px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[15px] text-blue-600">dataset</span>
                   Sample Transcripts (5 Available)
                 </label>
-                {selectedPresetId && (
-                  <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full flex items-center gap-1 border border-emerald-200 dark:border-emerald-800">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    Sample Loaded
-                  </span>
-                )}
+                <span className="text-[10px] text-slate-400">Click to load</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {SAMPLE_TRANSCRIPTS.map((sample, idx) => {
                   const isSelected = selectedPresetId === sample.id;
+                  const getCategoryColor = (cat: string) => {
+                    const c = cat.toLowerCase();
+                    if (c.includes('eng')) return 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300';
+                    if (c.includes('strat')) return 'bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-950/40 dark:text-purple-300';
+                    if (c.includes('agile') || c.includes('devops')) return 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300';
+                    if (c.includes('market') || c.includes('sales')) return 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/40 dark:text-amber-300';
+                    return 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-950/40 dark:text-rose-300';
+                  };
+
                   return (
                     <button
                       key={sample.id}
@@ -345,27 +363,27 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
                         idx === 4 ? 'sm:col-span-2' : ''
                       } ${
                         isSelected
-                          ? 'border-[#1a73e8] bg-blue-50/60 dark:bg-blue-950/40 text-[#1a73e8] ring-1 ring-[#1a73e8]/40 shadow-xs'
+                          ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/40 ring-2 ring-blue-600/30 shadow-xs'
                           : isDarkMode
                           ? 'border-slate-800 bg-slate-950/60 hover:border-slate-700'
                           : 'border-slate-200 bg-white hover:bg-slate-50/80 hover:border-slate-300 shadow-xs'
                       }`}
                     >
                       <span className={`w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5 ${
-                        isSelected ? 'bg-[#1a73e8] text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                        isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
                       }`}>
                         {idx + 1}
                       </span>
                       <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-1">
-                          <span className={`text-xs font-bold truncate ${isSelected ? 'text-[#1a73e8]' : 'text-slate-900 dark:text-slate-100'}`}>
+                        <div className="flex items-center justify-between gap-1.5">
+                          <span className={`text-xs font-bold truncate ${isSelected ? 'text-blue-700 dark:text-blue-400' : 'text-slate-900 dark:text-slate-100'}`}>
                             {sample.title}
                           </span>
-                          <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-medium shrink-0">
+                          <span className={`text-[9px] px-1.5 py-0.5 rounded-full font-semibold border shrink-0 ${getCategoryColor(sample.category)}`}>
                             {sample.category}
                           </span>
                         </div>
-                        <p className="text-[10px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
                           {sample.description}
                         </p>
                       </div>
@@ -376,33 +394,40 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
             </div>
 
             {/* Custom Focus Instruction Input */}
-            <div className="pt-1">
-              <label className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider block mb-1">
+            <div className="pt-1 space-y-1">
+              <label className="text-[11px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider block px-1">
                 Optional AI Focus Directive
               </label>
-              <input
-                type="text"
-                value={customPrompt}
-                onChange={(e) => setCustomPrompt(e.target.value)}
-                placeholder="e.g. Focus heavily on owner deadlines and technical risks..."
-                className={`w-full p-2.5 text-xs rounded-xl border ${
-                  isDarkMode ? 'bg-slate-950 border-slate-800 text-slate-200' : 'bg-white border-slate-200 text-slate-900'
-                } focus:outline-none focus:border-[#1a73e8] focus:ring-4 focus:ring-[#1a73e8]/10 placeholder:text-slate-400`}
-              />
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[18px]">
+                  tune
+                </span>
+                <input
+                  type="text"
+                  value={customPrompt}
+                  onChange={(e) => setCustomPrompt(e.target.value)}
+                  placeholder="e.g. Prioritize deadlines, technical risks, and SAML blockers..."
+                  className={`w-full pl-9 pr-3 py-2 text-xs rounded-xl border ${
+                    isDarkMode
+                      ? 'bg-slate-950 border-slate-800 text-slate-200 placeholder-slate-500'
+                      : 'bg-slate-50/50 focus:bg-white border-slate-200 text-slate-800 placeholder-slate-400'
+                  } focus:outline-none focus:border-blue-600 focus:ring-4 focus:ring-blue-500/10 transition-all`}
+                />
+              </div>
             </div>
           </div>
 
           {/* Analyze Button */}
-          <div className={`p-4 border-t ${isDarkMode ? 'border-slate-800' : 'border-slate-200'}`}>
+          <div className={`p-4 border-t ${isDarkMode ? 'border-slate-800 bg-slate-900/60' : 'border-slate-100 bg-slate-50/50'}`}>
             <button
               onClick={handleAnalyze}
               disabled={isProcessing}
-              className="w-full bg-gradient-to-r from-[#1a73e8] to-[#1557b0] hover:from-[#1557b0] hover:to-[#0d47a1] text-white py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-md shadow-blue-500/20 active:scale-[0.99] transition-all cursor-pointer"
+              className="w-full bg-[#1a73e8] hover:bg-[#1557b0] text-white py-3.5 px-6 rounded-xl font-semibold text-sm flex items-center justify-center gap-2 shadow-sm shadow-blue-500/25 active:scale-[0.99] transition-all cursor-pointer"
             >
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>
+              <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
                 auto_awesome
               </span>
-              Analyze Transcript with AI
+              <span>Analyze Transcript with AI</span>
             </button>
           </div>
         </section>
@@ -410,62 +435,76 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
         {/* Right Panel: AI Insights & Output (7 cols) */}
         <section className={`lg:col-span-7 flex flex-col rounded-2xl border ${
           isDarkMode ? 'bg-slate-900 border-slate-800' : 'bg-white border-slate-200/90'
-        } shadow-xs overflow-hidden min-h-[600px]`}>
+        } shadow-sm overflow-hidden min-h-[600px]`}>
           {/* Tabs Bar */}
           <div className={`px-4 pt-2.5 border-b ${
-            isDarkMode ? 'border-slate-800 bg-slate-900/70' : 'border-slate-200 bg-slate-50/70'
-          } flex items-center gap-1.5 overflow-x-auto custom-scrollbar`}>
-            {[
-              { id: 'summary', label: 'Summary', icon: 'description' },
-              { id: 'decisions', label: 'Decisions', icon: 'psychology' },
-              { id: 'actions', label: `Action Items (${analysisData?.action_items?.length || 0})`, icon: 'task_alt' },
-              { id: 'discussion', label: 'Discussion', icon: 'chat' },
-              { id: 'json', label: 'JSON', icon: 'data_object' },
-              { id: 'markdown', label: 'Markdown', icon: 'markdown' },
-            ].map((tab) => (
+            isDarkMode ? 'border-slate-800 bg-slate-900/70' : 'border-slate-100 bg-slate-50/60'
+          } flex items-center justify-between gap-2 overflow-x-auto custom-scrollbar`}>
+            <div className="flex items-center gap-1.5">
+              {[
+                { id: 'summary', label: 'Summary', icon: 'description' },
+                { id: 'decisions', label: 'Decisions', icon: 'psychology' },
+                { id: 'actions', label: `Action Items (${analysisData?.action_items?.length || 0})`, icon: 'task_alt' },
+                { id: 'discussion', label: 'Discussion', icon: 'forum' },
+                { id: 'json', label: 'JSON', icon: 'data_object' },
+                { id: 'markdown', label: 'Markdown', icon: 'markdown' },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`px-3.5 py-2 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
+                    activeTab === tab.id
+                      ? isDarkMode
+                        ? 'bg-slate-800 text-blue-400 shadow-sm border border-slate-700'
+                        : 'bg-white text-blue-600 shadow-xs border border-slate-200 font-bold'
+                      : isDarkMode
+                        ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                  }`}
+                >
+                  <span className={`material-symbols-outlined text-[17px] ${activeTab === tab.id ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`}>
+                    {tab.icon}
+                  </span>
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {analysisData && (
               <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`px-3.5 py-2 text-xs font-semibold rounded-lg flex items-center gap-1.5 transition-all cursor-pointer whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? isDarkMode
-                      ? 'bg-slate-800 text-blue-400 shadow-sm border border-slate-700'
-                      : 'bg-white text-[#1a73e8] shadow-xs border border-slate-200/90 font-bold'
-                    : isDarkMode
-                      ? 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
-                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
-                }`}
+                onClick={() => setShowExportModal(true)}
+                className="hidden sm:inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-800 hover:bg-blue-50 px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
               >
-                <span className={`material-symbols-outlined text-[17px] ${activeTab === tab.id ? 'text-[#1a73e8] dark:text-blue-400' : 'text-slate-400'}`}>
-                  {tab.icon}
-                </span>
-                {tab.label}
+                <span className="material-symbols-outlined text-[16px]">file_download</span>
+                <span>Export</span>
               </button>
-            ))}
+            )}
           </div>
 
-          {/* Quick Metrics Header Bar */}
-          <div className={`px-5 py-2.5 border-b ${
-            isDarkMode ? 'bg-slate-900/60 border-slate-800 text-slate-300' : 'bg-white border-slate-200/80 text-slate-700'
-          } flex flex-wrap items-center justify-between text-xs gap-3`}>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className={`font-semibold ${isDarkMode ? 'text-slate-100' : 'text-slate-900'}`}>
-                {analysisData?.meeting_title || 'Meeting Analysis'}
-              </span>
+          {/* Quick Metrics Header Bar (only shown when data exists) */}
+          {analysisData && (
+            <div className={`px-6 py-2.5 border-b ${
+              isDarkMode ? 'bg-slate-900/60 border-slate-800 text-slate-300' : 'bg-white border-slate-100 text-slate-700'
+            } flex flex-wrap items-center justify-between text-xs gap-3`}>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className={`font-semibold ${isDarkMode ? 'text-slate-100' : 'text-slate-900'}`}>
+                  {analysisData.meeting_title || 'Meeting Analysis'}
+                </span>
+              </div>
+              <div className="flex items-center gap-2 font-medium">
+                <span className="px-2.5 py-1 rounded-md bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700">
+                  Decisions: <strong className="text-slate-900 dark:text-white ml-0.5">{analysisData.decisions?.length || 0}</strong>
+                </span>
+                <span className="px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-blue-900/50">
+                  Tasks: <strong className="text-blue-900 dark:text-white ml-0.5">{analysisData.action_items?.length || 0}</strong>
+                </span>
+                <span className="px-2.5 py-1 rounded-md bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200/80 dark:border-amber-900/50">
+                  Risks: <strong className="text-amber-900 dark:text-white ml-0.5">{analysisData.risks?.length || 0}</strong>
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 font-medium">
-              <span className="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200/70 dark:border-slate-700">
-                Decisions: <strong className="text-slate-900 dark:text-white ml-0.5">{analysisData?.decisions?.length || 0}</strong>
-              </span>
-              <span className="px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border border-blue-200/70 dark:border-blue-900/50">
-                Tasks: <strong className="text-blue-900 dark:text-white ml-0.5">{analysisData?.action_items?.length || 0}</strong>
-              </span>
-              <span className="px-2.5 py-1 rounded-md bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200/70 dark:border-amber-900/50">
-                Risks: <strong className="text-amber-900 dark:text-white ml-0.5">{analysisData?.risks?.length || 0}</strong>
-              </span>
-            </div>
-          </div>
+          )}
 
           {/* Analysis Notice Alert */}
           {analysisNotice && (
@@ -483,51 +522,73 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
           {/* Tab Content Body */}
           <div className="p-6 flex-1 overflow-y-auto custom-scrollbar space-y-6">
             {!analysisData ? (
-              <div className="h-full min-h-[380px] flex flex-col items-center justify-center text-center p-4 sm:p-6 space-y-5 animate-fadeIn">
-                <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-blue-950/50 border border-blue-100 dark:border-blue-900/50 text-[#1a73e8] flex items-center justify-center shadow-xs">
-                  <span className="material-symbols-outlined text-3xl">auto_awesome</span>
-                </div>
-                <div className="max-w-md space-y-1.5">
-                  <h3 className="font-bold text-lg text-slate-900 dark:text-white">
-                    Ready for Transcript Analysis
+              <div className="h-full min-h-[460px] flex flex-col items-center justify-center text-center p-4 sm:p-8 space-y-6 animate-fadeIn">
+                <div className="space-y-3 max-w-lg mx-auto">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-semibold">
+                    <span className="material-symbols-outlined text-[16px]">auto_awesome</span>
+                    <span>AI Meeting Intelligence Workspace</span>
+                  </div>
+                  <h3 className="font-bold text-xl sm:text-2xl text-slate-900 dark:text-white tracking-tight">
+                    Turn Dialogue into Actionable Intelligence
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                    Choose one of the sample meetings below or paste your own transcript into the editor on the left to extract structured summaries, decisions, action items, and risks.
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Paste raw transcripts or pick any sample on the left, then click <strong>"Analyze Transcript with AI"</strong> to extract clean summaries, owner assignments, deadlines, and key decisions.
                   </p>
                 </div>
-                <div className="pt-2 w-full max-w-lg space-y-2">
-                  <span className="text-[11px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider block text-left">
-                    Quick-Load Sample Meetings
-                  </span>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
-                    {SAMPLE_TRANSCRIPTS.map((sample, idx) => (
-                      <button
-                        key={sample.id}
-                        type="button"
-                        onClick={() => handleSelectPreset(sample.id)}
-                        className={`p-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-[#1a73e8] hover:bg-blue-50/40 transition-all shadow-xs cursor-pointer flex items-start gap-2.5 ${
-                          idx === 4 ? 'sm:col-span-2' : ''
-                        }`}
-                      >
-                        <span className="w-5 h-5 rounded-md bg-blue-50 dark:bg-slate-700 text-[#1a73e8] dark:text-blue-400 text-[11px] flex items-center justify-center font-bold shrink-0 mt-0.5">
-                          {idx + 1}
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center justify-between gap-1">
-                            <span className="text-xs font-semibold text-slate-900 dark:text-slate-100 truncate">
-                              {sample.title}
-                            </span>
-                            <span className="text-[9px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-medium shrink-0">
-                              {sample.category}
-                            </span>
-                          </div>
-                          <p className="text-[11px] text-slate-500 dark:text-slate-400 line-clamp-1 mt-0.5">
-                            {sample.description}
-                          </p>
-                        </div>
-                      </button>
-                    ))}
+
+                {/* 4 Feature Preview Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 w-full max-w-xl text-left">
+                  <div className="p-3.5 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 space-y-1">
+                    <div className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-semibold text-xs">
+                      <span className="material-symbols-outlined text-[18px]">description</span>
+                      <span>Executive Summary</span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Synthesizes hours of rambling speech into clear takeaways and primary objectives.
+                    </p>
                   </div>
+
+                  <div className="p-3.5 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 space-y-1">
+                    <div className="flex items-center gap-2 text-purple-600 dark:text-purple-400 font-semibold text-xs">
+                      <span className="material-symbols-outlined text-[18px]">psychology</span>
+                      <span>Decision Tracker</span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Catalogs formal agreements, deferred initiatives, and stakeholder consensus.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 space-y-1">
+                    <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-semibold text-xs">
+                      <span className="material-symbols-outlined text-[18px]">task_alt</span>
+                      <span>Smart Action Items</span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Detects assignees, explicit due dates, and urgency levels with editable statuses.
+                    </p>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 space-y-1">
+                    <div className="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-semibold text-xs">
+                      <span className="material-symbols-outlined text-[18px]">file_download</span>
+                      <span>Universal Export</span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
+                      Instant export to formatted Markdown, clean JSON, PDF report, or clipboard.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Quick Start Action Button */}
+                <div className="pt-1">
+                  <button
+                    type="button"
+                    onClick={() => handleSelectPreset(SAMPLE_TRANSCRIPTS[0].id)}
+                    className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:hover:bg-blue-900/60 dark:text-blue-300 text-xs font-semibold border border-blue-200 dark:border-blue-800 transition-all cursor-pointer shadow-xs"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">play_circle</span>
+                    <span>Load Project Sync Sample (#1) to Preview</span>
+                  </button>
                 </div>
               </div>
             ) : (
@@ -585,10 +646,10 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
 
           {/* Footer Bar */}
           <div className={`p-4 border-t ${
-            isDarkMode ? 'border-slate-800 bg-slate-900/60' : 'border-slate-200 bg-slate-50/80'
+            isDarkMode ? 'border-slate-800 bg-slate-900/60' : 'border-slate-100 bg-slate-50/60'
           } flex justify-between items-center`}>
             <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-              {analysisData ? 'Structured Output ready for Export' : 'Select a sample or paste transcript to begin'}
+              {analysisData ? 'Structured analysis ready for team sharing and export' : 'Waiting for transcript input'}
             </span>
             <button
               onClick={() => {
@@ -599,7 +660,7 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
                 setShowExportModal(true);
               }}
               disabled={!analysisData}
-              className={`px-5 py-2.5 rounded-xl font-semibold text-xs flex items-center gap-2 transition-all shadow-xs ${
+              className={`px-5 py-2 rounded-xl font-semibold text-xs flex items-center gap-2 transition-all shadow-xs ${
                 analysisData
                   ? 'bg-[#1a73e8] hover:bg-[#1557b0] text-white cursor-pointer'
                   : 'bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
