@@ -219,8 +219,16 @@ app.post("/api/analyze", async (req, res) => {
   try {
     const { transcript, customPrompt } = req.body;
 
-    if (!transcript || typeof transcript !== "string" || transcript.trim().length < 10) {
+    if (!transcript || typeof transcript !== "string" || transcript.trim().length === 0) {
       return res.status(400).json({
+        success: false,
+        error: "Please enter a meeting transcript.",
+      });
+    }
+
+    if (transcript.trim().length < 10) {
+      return res.status(400).json({
+        success: false,
         error: "Transcript is too short. Please provide a transcript with at least 10 characters.",
       });
     }

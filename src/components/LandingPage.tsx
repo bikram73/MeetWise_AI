@@ -119,18 +119,19 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace }) => 
             Stop manually summarizing calls. Paste your Zoom, Teams, or Google Meet transcripts and let MeetWise extract owner recognition, due dates, and priority tasks in seconds.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="#demo"
-              className="ai-gradient text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-[#005bbf]/20 hover:opacity-90 transition-all flex items-center gap-2 cursor-pointer"
-            >
-              Try Demo <span className="material-symbols-outlined">arrow_forward</span>
-            </a>
             <button
               onClick={onOpenWorkspace}
-              className="bg-white border border-[#c1c6d6] px-8 py-4 rounded-xl font-semibold text-[#414754] hover:bg-[#f2f3ff] transition-colors cursor-pointer"
+              className="ai-gradient text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-[#005bbf]/20 hover:opacity-90 transition-all flex items-center gap-2 cursor-pointer"
             >
-              Watch Workflow
+              Analyze Transcript <span className="material-symbols-outlined">arrow_forward</span>
             </button>
+            <a
+              href="#demo"
+              className="bg-white border border-[#c1c6d6] px-8 py-4 rounded-xl font-semibold text-[#414754] hover:bg-[#f2f3ff] transition-colors cursor-pointer flex items-center gap-1.5"
+            >
+              <span>Try Demo</span>
+              <span className="material-symbols-outlined text-[18px]">play_circle</span>
+            </a>
           </div>
         </div>
       </section>

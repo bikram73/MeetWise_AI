@@ -37,8 +37,13 @@ export const WorkspacePage: React.FC<WorkspacePageProps> = ({ onBackToLanding, o
 
   // Real API call to server
   const handleAnalyze = async () => {
-    if (!transcriptText.trim() || transcriptText.trim().length < 10) {
-      setErrorMessage('Please enter or paste a meeting transcript with at least 10 characters.');
+    if (!transcriptText.trim()) {
+      setErrorMessage('Please enter a meeting transcript.');
+      return;
+    }
+
+    if (transcriptText.trim().length < 10) {
+      setErrorMessage('Transcript is too short. Please provide a transcript with at least 10 characters.');
       return;
     }
 

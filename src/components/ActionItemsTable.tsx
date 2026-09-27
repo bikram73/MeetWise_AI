@@ -16,6 +16,7 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPriority, setSelectedPriority] = useState<string>('all');
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [showAddModal, setShowAddModal] = useState(false);
 
   // New action item form state
@@ -33,7 +34,10 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
     const matchesPriority =
       selectedPriority === 'all' || item.priority.toLowerCase() === selectedPriority.toLowerCase();
 
-    return matchesSearch && matchesPriority;
+    const matchesStatus =
+      selectedStatus === 'all' || item.status.toLowerCase() === selectedStatus.toLowerCase();
+
+    return matchesSearch && matchesPriority && matchesStatus;
   });
 
   const handleStatusChange = (index: number, currentStatus: string) => {
@@ -80,9 +84,9 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
     <div className="space-y-4 animate-fadeIn">
       {/* Controls Bar */}
       <div className="flex flex-col sm:flex-row gap-3 justify-between items-stretch sm:items-center">
-        <div className="flex flex-1 gap-2">
+        <div className="flex flex-1 flex-wrap gap-2">
           {/* Search Input */}
-          <div className="relative flex-1">
+          <div className="relative flex-1 min-w-[160px]">
             <span className="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-[18px]">
               search
             </span>
@@ -112,12 +116,26 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
             <option value="medium">Medium Priority</option>
             <option value="low">Low Priority</option>
           </select>
+
+          {/* Status Filter */}
+          <select
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+            className={`px-3 py-2 text-xs rounded-xl border ${
+              isDarkMode ? 'bg-slate-950 border-slate-800 text-slate-200' : 'bg-white border-slate-200 text-slate-700'
+            } focus:outline-none cursor-pointer`}
+          >
+            <option value="all">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="in progress">In Progress</option>
+            <option value="completed">Completed</option>
+          </select>
         </div>
 
         {/* Add Task Button */}
         <button
           onClick={() => setShowAddModal(true)}
-          className="bg-[#1a73e8] hover:bg-[#1557b0] text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs"
+          className="bg-[#1a73e8] hover:bg-[#1557b0] text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-xs shrink-0"
         >
           <span className="material-symbols-outlined text-[16px]">add</span>
           Add Task
@@ -251,28 +269,28 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
                 <label className="text-xs font-bold text-slate-500 uppercase block mb-1">Priority</label>
                 <select
                   value={newPriority}
-                  onChange={(e) => setNewPriority(e.target.value as any)}
+                  onChange={(e) => setNewPriority(e.target.value as 'High' | 'Medium' | 'Low')}
                   className="w-full p-2.5 text-xs rounded-xl border dark:bg-slate-950 dark:border-slate-800 focus:outline-none cursor-pointer"
                 >
-                  <option value="High">High</option>
-                  <option value="Medium">Medium</option>
-                  <option value="Low">Low</option>
+                  <option value="High">High Priority</option>
+                  <option value="Medium">Medium Priority</option>
+                  <option value="Low">Low Priority</option>
                 </select>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2">
+              <div className="flex gap-2 justify-end pt-3 border-t dark:border-slate-800">
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold border hover:bg-slate-50 dark:hover:bg-slate-800 cursor-pointer"
+                  className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="bg-[#005bbf] text-white px-5 py-2 rounded-xl text-xs font-bold hover:bg-[#1a73e8] cursor-pointer"
+                  className="bg-[#1a73e8] hover:bg-[#1557b0] text-white px-5 py-2 rounded-xl text-xs font-semibold shadow-xs cursor-pointer"
                 >
-                  Save Task
+                  Create Task
                 </button>
               </div>
             </form>

@@ -5,6 +5,7 @@ export interface ActionItem {
   due_date: string;
   priority: 'High' | 'Medium' | 'Low' | string;
   status: 'Pending' | 'In Progress' | 'Completed' | string;
+  confidence?: number;
 }
 
 export interface DecisionItem {
@@ -13,6 +14,14 @@ export interface DecisionItem {
   status?: 'Approved' | 'Delayed' | 'Rejected' | 'Pending' | string;
   impact?: string;
   details?: string;
+}
+
+export interface ConfidenceMetrics {
+  overallScore: number;
+  ownerAttribution: number;
+  deadlinePrecision: number;
+  semanticClarity: number;
+  decisionAgreement: number;
 }
 
 export interface MeetingAnalysisResult {
@@ -24,6 +33,7 @@ export interface MeetingAnalysisResult {
   risks: string[];
   open_questions: string[];
   action_items: ActionItem[];
+  confidence_metrics?: ConfidenceMetrics;
   date?: string;
   participants?: { name: string; role?: string }[];
 }
