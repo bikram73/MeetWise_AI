@@ -20,7 +20,20 @@ export const DecisionsCard: React.FC<DecisionsCardProps> = ({ decisions, isDarkM
       {decisions.map((item, index) => {
         const isString = typeof item === 'string';
         const title = isString ? item : item.title;
-        const status = isString ? 'Approved' : item.status || 'Approved';
+        
+        // If string, parse status from content keywords instead of blindly assuming 'Approved'
+        let status = isString ? 'Approved' : item.status || 'Approved';
+        if (isString) {
+          const lower = item.toLowerCase();
+          if (lower.includes('postpone') || lower.includes('deferred') || lower.includes('delayed') || lower.includes('later') || lower.includes('phase 2')) {
+            status = 'Delayed';
+          } else if (lower.includes('not to') || lower.includes("won't") || lower.includes('rejected') || lower.includes('denied') || lower.includes('canceled') || lower.includes('cancelled')) {
+            status = 'Rejected';
+          } else if (lower.includes('propose') || lower.includes('pending') || lower.includes('tbd')) {
+            status = 'Pending';
+          }
+        }
+
         const impact = isString ? null : item.impact;
         const details = isString ? null : item.details;
 
@@ -34,12 +47,20 @@ export const DecisionsCard: React.FC<DecisionsCardProps> = ({ decisions, isDarkM
               iconColor: 'text-amber-600',
             };
           }
-          if (lower.includes('reject') || lower.includes('denied') || lower.includes('canceled')) {
+          if (lower.includes('reject') || lower.includes('denied') || lower.includes('canceled') || lower.includes('cancelled')) {
             return {
               border: 'border-red-500/30 bg-red-500/5',
               tag: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
               icon: 'cancel',
               iconColor: 'text-red-600',
+            };
+          }
+          if (lower.includes('pending')) {
+            return {
+              border: 'border-blue-500/30 bg-blue-500/5',
+              tag: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+              icon: 'hourglass_empty',
+              iconColor: 'text-blue-600',
             };
           }
           return {
@@ -64,7 +85,7 @@ export const DecisionsCard: React.FC<DecisionsCardProps> = ({ decisions, isDarkM
               </span>
               {impact && (
                 <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${style.tag}`}>
-                  {impact}
+                  {impact} Impact
                 </span>
               )}
             </div>

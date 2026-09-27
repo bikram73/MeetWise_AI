@@ -1,5 +1,71 @@
 import { jsPDF } from 'jspdf';
 import mammoth from 'mammoth';
+import * as pdfjsLib from 'pdfjs-dist';
+
+// Configure pdfjs worker to use unpkg cdn bundle or disable worker for pure client fallback
+if (typeof window !== 'undefined' && 'Worker' in window) {
+  try {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.mjs`;
+  } catch {
+    // If worker fails to attach, pdfjs uses fallback main-thread evaluation
+  }
+}
+
+/**
+ * Extracts plain text from a binary PDF file using pdfjs-dist getTextContent()
+ */
+async function extractTextFromPdf(file: File): Promise<string> {
+  const arrayBuffer = await file.arrayBuffer();
+  const loadingTask = pdfjsLib.getDocument({
+    data: new Uint8Array(arrayBuffer),
+    useSystemFonts: true,
+  });
+
+  const pdfDoc = await loadingTask.promise;
+  const numPages = pdfDoc.numPages;
+  const textPieces: string[] = [];
+
+  for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+    const page = await pdfDoc.getPage(pageNum);
+    const content = await page.getTextContent();
+    const pageText = content.items
+      .map((item: any) => ('str' in item ? item.str : ''))
+      .join(' ')
+      .trim();
+
+    if (pageText) {
+      textPieces.push(pageText);
+    }
+  }
+
+  const combined = textPieces.join('\n\n').trim();
+  if (!combined || combined.length < 10) {
+    throw new Error('Could not extract readable text from this PDF document.');
+  }
+
+  return combined;
+}
+
+/**
+ * Robust Subtitle / Transcript cleaner for VTT and SRT formats
+ */
+function cleanSubtitleText(raw: string): string {
+  return raw
+    .replace(/^WEBVTT[^\r\n]*/gi, '') // Remove WEBVTT header
+    .replace(/NOTE(?:\s+[^\r\n]*)?(?:[\r\n]+[\s\S]*?(?=[\r\n]{2,}|$))/gi, '') // Remove NOTE blocks
+    .replace(/STYLE(?:\s+[^\r\n]*)?(?:[\r\n]+[\s\S]*?(?=[\r\n]{2,}|$))/gi, '') // Remove STYLE blocks
+    .replace(/\d+\r?\n\d\d:\d\d:\d\d[.,]\d\d\d --> \d\d:\d\d:\d\d[.,]\d\d\d[^\r\n]*/g, '') // SRT timestamp blocks with index
+    .replace(/\d\d:\d\d(?::\d\d)?(?:[.,]\d\d\d)? --> \d\d:\d\d(?::\d\d)?(?:[.,]\d\d\d)?[^\r\n]*/g, '') // WebVTT cue timings & positioning
+    .replace(/<v(?:\s+[^>]+)?>/gi, (match) => {
+      // Extract speaker name from <v Alice> tags
+      const speaker = match.replace(/<v\s+([^>]+)>/i, '$1: ');
+      return speaker;
+    })
+    .replace(/<\/v>/gi, '')
+    .replace(/<[^>]+>/g, '') // Clean other HTML tags
+    .replace(/\r?\n\s*\r?\n/g, '\n') // Remove empty gap lines
+    .trim();
+}
 
 /**
  * Helper utility to read text content from user-uploaded files (.txt, .vtt, .srt, .md, .json, .docx, .pdf)
@@ -17,18 +83,11 @@ export async function readTranscriptFromFile(file: File): Promise<string> {
           reject(new Error('Uploaded file is empty. Please upload a file with meeting dialogue.'));
           return;
         }
-        // If VTT or SRT, clean up timing metadata lines slightly for better transcript readability
+
         if (extension === 'vtt' || extension === 'srt') {
-          text = text
-            .replace(/^WEBVTT\s*[\r\n]*/gi, '')
-            .replace(/\d+\r?\n\d\d:\d\d:\d\d[.,]\d\d\d --> \d\d:\d\d:\d\d[.,]\d\d\d[\s\S]*?(?=\r?\n\r?\n|\r?\n\d|\r?\n[A-Za-z]|$)/g, (match) => {
-              // Strip timestamp header line and preserve caption speech
-              return match.replace(/\d+\r?\n\d\d:\d\d:\d\d[.,]\d\d\d --> \d\d:\d\d:\d\d[.,]\d\d\d\s*/g, '');
-            })
-            .replace(/\d\d:\d\d:\d\d[.,]\d\d\d --> \d\d:\d\d:\d\d[.,]\d\d\d/g, '')
-            .replace(/<[^>]+>/g, '') // remove HTML/VTT speaker tags like <v Speaker>
-            .trim();
+          text = cleanSubtitleText(text);
         }
+
         resolve(text);
       };
       reader.onerror = () => reject(new Error('Failed to read text file.'));
@@ -51,45 +110,14 @@ export async function readTranscriptFromFile(file: File): Promise<string> {
     }
   }
 
-  // PDF or other binary formats
+  // PDF format using pdfjs-dist
   if (extension === 'pdf') {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const content = e.target?.result;
-        if (!content) {
-          reject(new Error('Uploaded PDF is empty.'));
-          return;
-        }
-        // Parse raw text stream tokens from PDF
-        const decoder = new TextDecoder('utf-8');
-        const rawString = decoder.decode(content as ArrayBuffer);
-        
-        // Extract text inside PDF stream Tj/TJ operators or clean readable blocks
-        const matches: string[] = [];
-        const tjRegex = /\(([^)]+)\)\s*Tj/g;
-        let match;
-        while ((match = tjRegex.exec(rawString)) !== null) {
-          if (match[1] && match[1].trim()) {
-            matches.push(match[1]);
-          }
-        }
-
-        let extracted = matches.join(' ');
-        if (!extracted || extracted.length < 20) {
-          // Fallback: extract printable strings
-          extracted = rawString.replace(/[^\x20-\x7E\n\r\t]/g, ' ').replace(/\s+/g, ' ').trim();
-        }
-
-        if (extracted.length > 20) {
-          resolve(extracted);
-        } else {
-          reject(new Error('Could not extract text from this PDF. Please copy and paste dialogue directly.'));
-        }
-      };
-      reader.onerror = () => reject(new Error('Error reading PDF file.'));
-      reader.readAsArrayBuffer(file);
-    });
+    try {
+      const text = await extractTextFromPdf(file);
+      return text;
+    } catch (err: any) {
+      throw new Error(err.message || 'Could not parse text from PDF file. Please ensure it contains selectable text.');
+    }
   }
 
   // Unsupported formats
@@ -112,7 +140,7 @@ export function downloadFile(content: string, filename: string, mimeType: string
 }
 
 /**
- * Generate and download an executive PDF report
+ * Generate and download an executive PDF report with full metadata and wrapped table cells
  */
 export function generatePdfReport(data: any) {
   const doc = new jsPDF({
@@ -153,12 +181,13 @@ export function generatePdfReport(data: any) {
   doc.text(splitTitle, margin, cursorY);
   cursorY += splitTitle.length * 20 + 5;
 
-  // Date
+  // Date & Extraction Coverage
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(10);
   doc.setTextColor(110, 120, 135);
   const dateStr = data.date || new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  doc.text(`Generated on: ${dateStr}`, margin, cursorY);
+  const coverageScore = data.confidence_metrics?.overallScore || 90;
+  doc.text(`Generated on: ${dateStr}   |   Extraction Coverage: ${coverageScore}%`, margin, cursorY);
   cursorY += 20;
 
   // Horizontal Rule
@@ -228,23 +257,68 @@ export function generatePdfReport(data: any) {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(12);
     doc.setTextColor(16, 163, 127);
-    doc.text('Decisions Agreed', margin, cursorY);
+    doc.text('Decisions & Consensus', margin, cursorY);
     cursorY += 16;
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(10);
     doc.setTextColor(50, 60, 75);
     data.decisions.forEach((dec: any) => {
-      checkPageBreak(20);
-      const decText = typeof dec === 'string' ? dec : `${dec.status ? `[${dec.status}] ` : ''}${dec.title || dec.task || ''}`;
-      const splitDec = doc.splitTextToSize(`✔ ${decText}`, contentWidth - 10);
+      checkPageBreak(25);
+      const isString = typeof dec === 'string';
+      const decTitle = isString ? dec : dec.title;
+      const decStatus = isString ? 'Approved' : dec.status || 'Approved';
+      const decImpact = !isString && dec.impact ? ` [${dec.impact} Impact]` : '';
+      const splitDec = doc.splitTextToSize(`✔ [${decStatus}] ${decTitle}${decImpact}`, contentWidth - 10);
       doc.text(splitDec, margin + 10, cursorY);
       cursorY += splitDec.length * 14 + 4;
     });
     cursorY += 10;
   }
 
-  // Action Items Table
+  // Risks & Concerns
+  if (data.risks && data.risks.length > 0) {
+    checkPageBreak(40);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.setTextColor(217, 119, 6);
+    doc.text('Risks & Bottlenecks', margin, cursorY);
+    cursorY += 16;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(50, 60, 75);
+    data.risks.forEach((risk: string) => {
+      checkPageBreak(20);
+      const splitRisk = doc.splitTextToSize(`⚠ ${risk}`, contentWidth - 10);
+      doc.text(splitRisk, margin + 10, cursorY);
+      cursorY += splitRisk.length * 14 + 4;
+    });
+    cursorY += 10;
+  }
+
+  // Open Questions
+  if (data.open_questions && data.open_questions.length > 0) {
+    checkPageBreak(40);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(12);
+    doc.setTextColor(37, 99, 235);
+    doc.text('Open Questions & Follow-ups', margin, cursorY);
+    cursorY += 16;
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(50, 60, 75);
+    data.open_questions.forEach((q: string) => {
+      checkPageBreak(20);
+      const splitQ = doc.splitTextToSize(`? ${q}`, contentWidth - 10);
+      doc.text(splitQ, margin + 10, cursorY);
+      cursorY += splitQ.length * 14 + 4;
+    });
+    cursorY += 10;
+  }
+
+  // Action Items Table with Column Auto-Wrapping
   if (data.action_items && data.action_items.length > 0) {
     checkPageBreak(60);
     doc.setFont('helvetica', 'bold');
@@ -253,6 +327,18 @@ export function generatePdfReport(data: any) {
     doc.text('Action Items', margin, cursorY);
     cursorY += 16;
 
+    const widthTask = 210;
+    const widthOwner = 95;
+    const widthDue = 90;
+    const widthPri = 60;
+    const widthStatus = 60;
+
+    const colTask = margin + 5;
+    const colOwner = colTask + widthTask;
+    const colDue = colOwner + widthOwner;
+    const colPri = colDue + widthDue;
+    const colStatus = colPri + widthPri;
+
     // Header row
     doc.setFillColor(240, 244, 250);
     doc.rect(margin, cursorY, contentWidth, 20, 'F');
@@ -260,31 +346,34 @@ export function generatePdfReport(data: any) {
     doc.setFontSize(9);
     doc.setTextColor(30, 40, 60);
 
-    const colTask = margin + 6;
-    const colOwner = margin + 260;
-    const colDue = margin + 350;
-    const colPri = margin + 440;
-
     doc.text('Task', colTask, cursorY + 14);
     doc.text('Owner', colOwner, cursorY + 14);
     doc.text('Due Date', colDue, cursorY + 14);
     doc.text('Priority', colPri, cursorY + 14);
+    doc.text('Status', colStatus, cursorY + 14);
     cursorY += 24;
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
 
     data.action_items.forEach((item: any, i: number) => {
-      checkPageBreak(25);
+      const taskLines = doc.splitTextToSize(item.task || '', widthTask - 10);
+      const ownerLines = doc.splitTextToSize(item.owner || 'Unassigned', widthOwner - 8);
+      const dueLines = doc.splitTextToSize(item.due_date || 'Not Specified', widthDue - 8);
+      const maxLines = Math.max(taskLines.length, ownerLines.length, dueLines.length, 1);
+      const rowHeight = maxLines * 12 + 8;
+
+      checkPageBreak(rowHeight + 4);
+
       if (i % 2 === 1) {
         doc.setFillColor(248, 250, 252);
-        doc.rect(margin, cursorY - 2, contentWidth, 20, 'F');
+        doc.rect(margin, cursorY - 2, contentWidth, rowHeight, 'F');
       }
+
       doc.setTextColor(40, 50, 65);
-      const taskTrunc = item.task.length > 50 ? item.task.slice(0, 48) + '...' : item.task;
-      doc.text(taskTrunc, colTask, cursorY + 11);
-      doc.text(item.owner || 'Unassigned', colOwner, cursorY + 11);
-      doc.text(item.due_date || 'Not Specified', colDue, cursorY + 11);
+      doc.text(taskLines, colTask, cursorY + 10);
+      doc.text(ownerLines, colOwner, cursorY + 10);
+      doc.text(dueLines, colDue, cursorY + 10);
 
       // Priority color
       if (item.priority === 'High') {
@@ -294,8 +383,12 @@ export function generatePdfReport(data: any) {
       } else {
         doc.setTextColor(37, 99, 235);
       }
-      doc.text(item.priority || 'Medium', colPri, cursorY + 11);
-      cursorY += 18;
+      doc.text(item.priority || 'Medium', colPri, cursorY + 10);
+
+      doc.setTextColor(70, 80, 95);
+      doc.text(item.status || 'Pending', colStatus, cursorY + 10);
+
+      cursorY += rowHeight;
     });
 
     cursorY += 15;
@@ -351,7 +444,7 @@ export function generateMarkdownReport(data: any): string {
       if (typeof dec === 'string') {
         md += `- ${dec}\n`;
       } else {
-        md += `- **[${dec.status || 'Decided'}]** ${dec.title || dec.task || ''} ${dec.impact ? `_(${dec.impact})_` : ''}\n`;
+        md += `- **[${dec.status || 'Decided'}]** ${dec.title || dec.task || ''} ${dec.impact ? `_(${dec.impact} Impact)_` : ''}${dec.details ? ` — ${dec.details}` : ''}\n`;
       }
     });
     md += `\n`;
