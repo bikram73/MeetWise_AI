@@ -373,9 +373,12 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
       {/* Features Bento Grid */}
       <section className="py-24 max-w-[1280px] mx-auto px-4 md:px-10" id="features">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold mb-4">Precision-Engineered for Results</h2>
-          <p className="text-[#414754] max-w-xl mx-auto">
-            Engineered to extract value from every conversation using the world's most advanced LLMs.
+          <div className="inline-flex items-center gap-2 bg-[#005bbf]/10 text-[#005bbf] px-3.5 py-1 rounded-full text-xs font-bold mb-3">
+            <span>FULL-STACK ARCHITECTURE</span>
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Precision-Engineered for Results</h2>
+          <p className="text-[#414754] max-w-2xl mx-auto text-base">
+            Engineered to extract value from every conversation using Google Gemini models, deterministic consensus scoring, and privacy-first local persistence.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -384,9 +387,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
             <div className="w-12 h-12 rounded-2xl bg-[#005bbf]/5 flex items-center justify-center text-[#005bbf] mb-6 group-hover:scale-110 transition-transform">
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>description</span>
             </div>
-            <h3 className="text-xl font-bold mb-3">AI Summary</h3>
+            <h3 className="text-xl font-bold mb-3">AI Executive Summary</h3>
             <p className="text-[#414754] text-sm leading-relaxed">
-              Instant executive summaries that capture the essence of 60-minute calls in seconds.
+              Synthesizes 60+ minute calls into coherent overviews, key themes, and main takeaways in seconds.
             </p>
           </div>
 
@@ -395,9 +398,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
             <div className="w-12 h-12 rounded-2xl bg-[#732de4]/5 flex items-center justify-center text-[#732de4] mb-6 group-hover:scale-110 transition-transform">
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>psychology</span>
             </div>
-            <h3 className="text-xl font-bold mb-3">Decision Detection</h3>
+            <h3 className="text-xl font-bold mb-3">Tri-State Decision Matrix</h3>
             <p className="text-[#414754] text-sm leading-relaxed">
-              Automatically flags whenever a team makes a definitive choice or pivot.
+              Detects, categorizes, and tracks Approved, Delayed/Postponed, and Rejected decisions with clear rationales.
             </p>
           </div>
 
@@ -406,9 +409,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
             <div className="w-12 h-12 rounded-2xl bg-[#005ac1]/5 flex items-center justify-center text-[#005ac1] mb-6 group-hover:scale-110 transition-transform">
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>task_alt</span>
             </div>
-            <h3 className="text-xl font-bold mb-3">Action Items</h3>
+            <h3 className="text-xl font-bold mb-3">Action Item Extraction</h3>
             <p className="text-[#414754] text-sm leading-relaxed">
-              Extract clear, bulleted tasks directly from spoken promises.
+              Isolates concrete tasks directly from verbal commitments with live status management and priority levels.
             </p>
           </div>
 
@@ -417,9 +420,9 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
             <div className="w-12 h-12 rounded-2xl bg-[#ba1a1a]/5 flex items-center justify-center text-[#ba1a1a] mb-6 group-hover:scale-110 transition-transform">
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>person_search</span>
             </div>
-            <h3 className="text-xl font-bold mb-3">Owner Recognition</h3>
+            <h3 className="text-xl font-bold mb-3">Owner Attribution</h3>
             <p className="text-[#414754] text-sm leading-relaxed">
-              Uses context clues to assign every action item to the correct stakeholder.
+              Maps task assignments to precise stakeholders, recognizing self-commitments and direct delegation.
             </p>
           </div>
 
@@ -428,43 +431,108 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
             <div className="w-12 h-12 rounded-2xl bg-[#005bbf]/5 flex items-center justify-center text-[#005bbf] mb-6 group-hover:scale-110 transition-transform">
               <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>calendar_month</span>
             </div>
-            <h3 className="text-xl font-bold mb-3">Due Date Extraction</h3>
+            <h3 className="text-xl font-bold mb-3">Relative Date Resolution</h3>
             <p className="text-[#414754] text-sm leading-relaxed">
-              Smart NLP identifies dates like "next Tuesday" and converts them to ISO dates.
+              Normalizes relative timestamps ("next Tuesday", "by EOD Friday", "end of Q3") into explicit deliverable dates.
             </p>
           </div>
 
           {/* Feature 6 */}
           <div className="bg-white p-8 rounded-3xl border border-[#c1c6d6]/30 ai-card-glow transition-all group">
             <div className="w-12 h-12 rounded-2xl bg-[#005ac1]/5 flex items-center justify-center text-[#005ac1] mb-6 group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>priority_high</span>
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>analytics</span>
             </div>
-            <h3 className="text-xl font-bold mb-3">Priority Scoring</h3>
+            <h3 className="text-xl font-bold mb-3">Consensus & Coverage Metrics</h3>
             <p className="text-[#414754] text-sm leading-relaxed">
-              Determines urgency levels based on meeting tone and specific key phrases.
+              Calculates deterministic task clarity, speaker agreement index, and semantic coverage percentages.
             </p>
           </div>
 
           {/* Feature 7 */}
           <div className="bg-white p-8 rounded-3xl border border-[#c1c6d6]/30 ai-card-glow transition-all group">
             <div className="w-12 h-12 rounded-2xl bg-[#732de4]/5 flex items-center justify-center text-[#732de4] mb-6 group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>data_object</span>
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>lock</span>
             </div>
-            <h3 className="text-xl font-bold mb-3">JSON Export</h3>
+            <h3 className="text-xl font-bold mb-3">Privacy & LocalStorage</h3>
             <p className="text-[#414754] text-sm leading-relaxed">
-              Developer-friendly raw data export for seamless integration into Jira or Trello.
+              Client-side persistence ensures your sensitive meeting transcripts stay strictly on your machine.
             </p>
           </div>
 
           {/* Feature 8 */}
           <div className="bg-white p-8 rounded-3xl border border-[#c1c6d6]/30 ai-card-glow transition-all group">
             <div className="w-12 h-12 rounded-2xl bg-[#005bbf]/5 flex items-center justify-center text-[#005bbf] mb-6 group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>markdown</span>
+              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>download</span>
             </div>
-            <h3 className="text-xl font-bold mb-3">Markdown Support</h3>
+            <h3 className="text-xl font-bold mb-3">Multi-Format Export</h3>
             <p className="text-[#414754] text-sm leading-relaxed">
-              Clean, formatted documentation ready for Notion or GitHub Wikis.
+              Instant one-click exports to Markdown (.md), JSON schema (.json), printable PDF reports, and clipboard.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Technical Specifications & Deep Dives */}
+      <section className="py-20 bg-slate-50 border-y border-slate-200/80">
+        <div className="max-w-[1280px] mx-auto px-4 md:px-10">
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 bg-blue-100 text-[#005bbf] px-3.5 py-1 rounded-full text-xs font-bold mb-3">
+              <span>CORE CAPABILITIES</span>
+            </div>
+            <h2 className="text-3xl font-bold text-slate-900">How MeetWise AI Powers Modern Teams</h2>
+            <p className="text-slate-600 max-w-xl mx-auto mt-2 text-sm">
+              From engineering standups and sprint retrospectives to executive steering committees.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Spec Card 1 */}
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
+                <span className="material-symbols-outlined text-[22px]">auto_stories</span>
+              </div>
+              <h3 className="font-bold text-lg text-slate-900">Universal File Parsing</h3>
+              <p className="text-xs leading-relaxed text-slate-600">
+                Directly parses raw `.vtt` and `.srt` subtitle files by automatically stripping cue indexes and timing headers. Decompresses text from Word `.docx` documents and multi-page `.pdf` files locally in the browser with zero loss.
+              </p>
+              <ul className="text-xs space-y-1.5 text-slate-500 font-medium">
+                <li className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold">✓</span> Zoom, Teams & Google Meet VTT tracks</li>
+                <li className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold">✓</span> Word (.docx) & PDF extraction</li>
+                <li className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold">✓</span> Plain text (.txt) & Markdown (.md)</li>
+              </ul>
+            </div>
+
+            {/* Spec Card 2 */}
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
+                <span className="material-symbols-outlined text-[22px]">model_training</span>
+              </div>
+              <h3 className="font-bold text-lg text-slate-900">Model Waterfall & Offline Heuristics</h3>
+              <p className="text-xs leading-relaxed text-slate-600">
+                Uses an automated Gemini cascade (`gemini-3.8-flash`, `gemini-flash-latest`, `gemini-3.1-pro-preview`) with rate-limit resiliency, combined with an in-memory heuristic engine that keeps working even with zero internet connectivity.
+              </p>
+              <ul className="text-xs space-y-1.5 text-slate-500 font-medium">
+                <li className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold">✓</span> Multi-tier rate limit cascade</li>
+                <li className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold">✓</span> Zero-hallucination offline fallback</li>
+                <li className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold">✓</span> Custom focus directives & prompts</li>
+              </ul>
+            </div>
+
+            {/* Spec Card 3 */}
+            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-bold">
+                <span className="material-symbols-outlined text-[22px]">history_toggle_off</span>
+              </div>
+              <h3 className="font-bold text-lg text-slate-900">Browser History & Instant Restore</h3>
+              <p className="text-xs leading-relaxed text-slate-600">
+                Maintains a dedicated local transcript repository. Filter previous meetings by keyword or topic, review key deliverables, and restore any previous meeting directly back into the live Workspace editor in one click.
+              </p>
+              <ul className="text-xs space-y-1.5 text-slate-500 font-medium">
+                <li className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold">✓</span> Persistent LocalStorage records</li>
+                <li className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold">✓</span> Search & filter historical transcripts</li>
+                <li className="flex items-center gap-1.5"><span className="text-emerald-600 font-bold">✓</span> One-click reload into workspace</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
