@@ -84,8 +84,8 @@ export const DecisionsCard: React.FC<DecisionsCardProps> = ({ decisions, isDarkM
                 {status}
               </span>
               {impact && (
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${style.tag}`}>
-                  {impact} Impact
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${style.tag}`} title="Impact level derived by AI analysis">
+                  {impact} Impact <span className="opacity-70 font-normal text-[9px]">(AI)</span>
                 </span>
               )}
             </div>

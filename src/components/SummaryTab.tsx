@@ -161,10 +161,15 @@ export const SummaryTab: React.FC<SummaryTabProps> = ({ data, isDarkMode = false
         <div className={`p-4 rounded-2xl border ${
           isDarkMode ? 'bg-slate-900/80 border-slate-800' : 'bg-white border-slate-200'
         } space-y-1.5 shadow-xs`}>
-          <h3 className="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 tracking-wider flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[16px] text-[#1a73e8]">flag</span>
-            Meeting Objective
-          </h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-xs font-bold uppercase text-slate-500 dark:text-slate-400 tracking-wider flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[16px] text-[#1a73e8]">flag</span>
+              Meeting Objective
+            </h3>
+            <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">
+              AI-Inferred
+            </span>
+          </div>
           <p className={`text-sm font-semibold ${isDarkMode ? 'text-slate-200' : 'text-slate-900'}`}>
             {data.meeting_objective}
           </p>

@@ -149,8 +149,18 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
             <tr className={`border-b font-semibold ${isDarkMode ? 'bg-slate-950/60 border-slate-800 text-slate-400' : 'bg-slate-50/80 border-slate-200 text-slate-700'}`}>
               <th className="p-3.5">Task Description</th>
               <th className="p-3.5">Owner</th>
-              <th className="p-3.5">Due Date</th>
-              <th className="p-3.5">Priority</th>
+              <th className="p-3.5">
+                <span className="inline-flex items-center gap-1" title="Original spoken wording preserved (e.g. relative days like 'next Tuesday')">
+                  Due Date
+                  <span className="material-symbols-outlined text-[13px] text-slate-400">help</span>
+                </span>
+              </th>
+              <th className="p-3.5">
+                <span className="inline-flex items-center gap-1" title="Priority level assessed by AI inference">
+                  Priority
+                  <span className="text-[9px] font-normal opacity-70">(AI)</span>
+                </span>
+              </th>
               <th className="p-3.5">Status</th>
             </tr>
           </thead>

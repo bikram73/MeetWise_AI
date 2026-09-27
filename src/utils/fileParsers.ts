@@ -203,7 +203,7 @@ export function generatePdfReport(data: any) {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(12);
     doc.setTextColor(26, 115, 232);
-    doc.text('Meeting Objective', margin, cursorY);
+    doc.text('Meeting Objective (AI-Inferred)', margin, cursorY);
     cursorY += 16;
 
     doc.setFont('helvetica', 'normal');
@@ -245,7 +245,7 @@ export function generatePdfReport(data: any) {
     doc.setTextColor(50, 60, 75);
     data.discussion_points.forEach((point: string) => {
       checkPageBreak(20);
-      const splitPoint = doc.splitTextToSize(`• ${point}`, contentWidth - 10);
+      const splitPoint = doc.splitTextToSize(`- ${point}`, contentWidth - 10);
       doc.text(splitPoint, margin + 10, cursorY);
       cursorY += splitPoint.length * 14 + 4;
     });
@@ -269,8 +269,8 @@ export function generatePdfReport(data: any) {
       const isString = typeof dec === 'string';
       const decTitle = isString ? dec : dec.title;
       const decStatus = isString ? 'Approved' : dec.status || 'Approved';
-      const decImpact = !isString && dec.impact ? ` [${dec.impact} Impact]` : '';
-      const splitDec = doc.splitTextToSize(`✔ [${decStatus}] ${decTitle}${decImpact}`, contentWidth - 10);
+      const decImpact = !isString && dec.impact ? ` [${dec.impact} Impact (AI-derived)]` : '';
+      const splitDec = doc.splitTextToSize(`[${decStatus}] ${decTitle}${decImpact}`, contentWidth - 10);
       doc.text(splitDec, margin + 10, cursorY);
       cursorY += splitDec.length * 14 + 4;
     });
@@ -291,7 +291,7 @@ export function generatePdfReport(data: any) {
     doc.setTextColor(50, 60, 75);
     data.risks.forEach((risk: string) => {
       checkPageBreak(20);
-      const splitRisk = doc.splitTextToSize(`⚠ ${risk}`, contentWidth - 10);
+      const splitRisk = doc.splitTextToSize(`! ${risk}`, contentWidth - 10);
       doc.text(splitRisk, margin + 10, cursorY);
       cursorY += splitRisk.length * 14 + 4;
     });
@@ -424,7 +424,7 @@ export function generateMarkdownReport(data: any): string {
   md += `**Date:** ${dateStr}\n\n`;
   
   if (data.meeting_objective) {
-    md += `## 🎯 Meeting Objective\n${data.meeting_objective}\n\n`;
+    md += `## 🎯 Meeting Objective *(AI-Inferred)*\n${data.meeting_objective}\n\n`;
   }
 
   if (data.summary) {
@@ -445,7 +445,7 @@ export function generateMarkdownReport(data: any): string {
       if (typeof dec === 'string') {
         md += `- ${dec}\n`;
       } else {
-        md += `- **[${dec.status || 'Decided'}]** ${dec.title || dec.task || ''} ${dec.impact ? `_(${dec.impact} Impact)_` : ''}${dec.details ? ` — ${dec.details}` : ''}\n`;
+        md += `- **[${dec.status || 'Decided'}]** ${dec.title || dec.task || ''} ${dec.impact ? `_(${dec.impact} Impact - AI-derived)_` : ''}${dec.details ? ` — ${dec.details}` : ''}\n`;
       }
     });
     md += `\n`;
