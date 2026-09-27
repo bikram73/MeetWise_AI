@@ -9,6 +9,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
   const [demoProcessing, setDemoProcessing] = useState(false);
   const [demoProcessed, setDemoProcessed] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleDemoProcess = () => {
     setDemoProcessing(true);
@@ -68,21 +69,23 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
   return (
     <div className="bg-white text-[#131b2e] font-sans overflow-x-hidden">
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-[#c1c6d6]/20 shadow-sm h-16 flex items-center">
+      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-[#c1c6d6]/20 shadow-xs h-16 flex items-center">
         <div className="flex justify-between items-center px-4 md:px-10 w-full max-w-[1280px] mx-auto">
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-9 h-9 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25 shrink-0">
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <div className="w-8 h-8 md:w-9 md:h-9 rounded-xl bg-[#1a73e8] flex items-center justify-center text-white shadow-md shadow-[#1a73e8]/25 shrink-0">
+              <svg className="w-4 h-4 md:w-5 md:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                 <path d="m9 10 2 2 4-4" />
               </svg>
             </div>
             <div className="flex flex-col text-left">
-              <span className="text-lg md:text-xl font-bold text-[#1a73e8] leading-tight">MeetWise AI</span>
-              <span className="text-[10px] md:text-[11px] font-semibold text-[#005bbf] tracking-wide leading-none">AI Workspace</span>
+              <span className="text-base md:text-xl font-bold text-[#1a73e8] leading-tight">MeetWise AI</span>
+              <span className="text-[9px] md:text-[11px] font-semibold text-[#005bbf] tracking-wide leading-none">AI Workspace</span>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-7">
+
+          {/* Desktop Nav Links */}
+          <div className="hidden lg:flex items-center gap-7">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className="text-[#414754] hover:text-[#005bbf] transition-colors font-medium cursor-pointer"
@@ -103,25 +106,105 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onOpenWorkspace, onOpe
               </button>
             )}
           </div>
-          <div className="flex items-center gap-2.5">
+
+          {/* Action CTAs & Mobile Hamburger */}
+          <div className="flex items-center gap-2 sm:gap-2.5">
             {onOpenHistory && (
               <button
                 onClick={onOpenHistory}
-                className="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer"
+                className="hidden sm:flex md:hidden lg:hidden items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 cursor-pointer"
                 title="View Transcript History"
               >
-                <span className="material-symbols-outlined text-[18px]">history</span>
+                <span className="material-symbols-outlined text-[16px] text-[#1a73e8]">history</span>
+                <span>History</span>
               </button>
             )}
             <button
               onClick={onOpenWorkspace}
-              className="bg-[#1a73e8] hover:bg-[#005bbf] text-white px-4 md:px-5 py-2 rounded-xl font-semibold text-xs md:text-sm scale-95 active:scale-90 transition-all shadow-md shadow-[#1a73e8]/20 flex items-center gap-1.5 cursor-pointer"
+              className="bg-[#1a73e8] hover:bg-[#005bbf] text-white px-3 sm:px-5 py-2 rounded-xl font-semibold text-xs md:text-sm scale-95 active:scale-90 transition-all shadow-md shadow-[#1a73e8]/20 flex items-center gap-1.5 cursor-pointer"
             >
-              <span>Open Workspace</span>
+              <span className="hidden xs:inline">Open Workspace</span>
+              <span className="xs:hidden">Workspace</span>
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </button>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 border border-slate-200 cursor-pointer flex items-center justify-center"
+              aria-label="Toggle Navigation Menu"
+            >
+              <span className="material-symbols-outlined text-[20px]">
+                {mobileMenuOpen ? 'close' : 'menu'}
+              </span>
             </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Menu */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden fixed inset-x-0 top-16 bg-white/95 backdrop-blur-xl border-b border-slate-200 shadow-xl px-6 py-5 flex flex-col gap-4 animate-fadeIn">
+            <button
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setMobileMenuOpen(false);
+              }}
+              className="text-left font-semibold text-sm text-slate-700 hover:text-[#005bbf] py-1"
+            >
+              Home
+            </button>
+            <a
+              href="#features"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-left font-semibold text-sm text-slate-700 hover:text-[#005bbf] py-1"
+            >
+              Features
+            </a>
+            <a
+              href="#workflow"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-left font-semibold text-sm text-slate-700 hover:text-[#005bbf] py-1"
+            >
+              Workflow
+            </a>
+            <a
+              href="#demo"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-left font-semibold text-sm text-slate-700 hover:text-[#005bbf] py-1"
+            >
+              Demo
+            </a>
+            <a
+              href="#faq"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-left font-semibold text-sm text-slate-700 hover:text-[#005bbf] py-1"
+            >
+              Docs & FAQ
+            </a>
+            {onOpenHistory && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenHistory();
+                }}
+                className="text-left font-semibold text-sm text-[#1a73e8] py-1 flex items-center gap-2"
+              >
+                <span className="material-symbols-outlined text-[18px]">history</span>
+                <span>Transcript History</span>
+              </button>
+            )}
+            <div className="pt-2 border-t border-slate-100 flex flex-col gap-2">
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenWorkspace();
+                }}
+                className="w-full bg-[#1a73e8] text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm"
+              >
+                <span>Launch AI Workspace</span>
+                <span className="material-symbols-outlined text-[16px]">rocket_launch</span>
+              </button>
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}

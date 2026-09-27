@@ -142,8 +142,68 @@ export const ActionItemsTable: React.FC<ActionItemsTableProps> = ({
         </button>
       </div>
 
-      {/* Table Container */}
-      <div className={`overflow-x-auto rounded-2xl border shadow-xs ${isDarkMode ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-white'}`}>
+      {/* Mobile Card List (Visible on xs/sm screens) */}
+      <div className="block md:hidden space-y-3">
+        {filteredItems.length === 0 ? (
+          <div className="p-8 text-center text-slate-400 text-xs bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+            No action items match your current filter.
+          </div>
+        ) : (
+          filteredItems.map((item, originalIndex) => {
+            const actualIndex = actionItems.findIndex((a) => a === item);
+            return (
+              <div
+                key={actualIndex !== -1 ? actualIndex : originalIndex}
+                className={`p-4 rounded-2xl border space-y-3 transition-all ${
+                  isDarkMode
+                    ? 'bg-slate-900 border-slate-800 text-slate-200'
+                    : 'bg-white border-slate-200 text-slate-800'
+                } shadow-2xs`}
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <p className={`text-xs font-semibold leading-relaxed flex-1 ${
+                    item.status === 'Completed' ? 'line-through text-slate-400' : ''
+                  }`}>
+                    {item.task}
+                  </p>
+                  <span className={`inline-block shrink-0 px-2 py-0.5 rounded-md text-[10px] font-bold border ${getPriorityBadgeClass(item.priority)}`}>
+                    {item.priority}
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px]">
+                  <div className="flex items-center gap-2">
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full font-semibold border ${
+                      isDarkMode ? 'bg-slate-800 text-slate-200 border-slate-700' : 'bg-[#005bbf]/10 text-[#005bbf] border-[#005bbf]/20'
+                    }`}>
+                      <span className="material-symbols-outlined text-[12px]">person</span>
+                      {item.owner}
+                    </span>
+
+                    <span className="inline-flex items-center gap-1 text-slate-500 dark:text-slate-400 font-medium">
+                      <span className="material-symbols-outlined text-[13px]">calendar_today</span>
+                      {item.due_date}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => handleStatusChange(actualIndex !== -1 ? actualIndex : originalIndex, item.status)}
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg font-bold border transition-all cursor-pointer ${getStatusBadgeClass(item.status)}`}
+                  >
+                    <span className="material-symbols-outlined text-[13px]">
+                      {item.status === 'Completed' ? 'check_circle' : item.status === 'In Progress' ? 'pending' : 'schedule'}
+                    </span>
+                    {item.status}
+                  </button>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* Desktop / Tablet Table Container (Visible on md and up) */}
+      <div className={`hidden md:block overflow-x-auto rounded-2xl border shadow-xs ${isDarkMode ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-white'}`}>
         <table className="w-full text-left text-xs border-collapse">
           <thead>
             <tr className={`border-b font-semibold ${isDarkMode ? 'bg-slate-950/60 border-slate-800 text-slate-400' : 'bg-slate-50/80 border-slate-200 text-slate-700'}`}>
